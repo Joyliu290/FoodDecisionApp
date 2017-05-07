@@ -1,0 +1,2 @@
+# FoodDecisionApp
+Since me and my friends are indecisive people, I decided to make an app that would choose a food style randomly through a spinner, and Yelp API will sugggest the best and closest restaurant to the user. An Android App that has wheel with numberings on it. Each numbering indicate a different style of food. Whichever food style that the spinner lands on will be the food style that user will be eating.
