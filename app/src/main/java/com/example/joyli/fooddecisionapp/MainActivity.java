@@ -27,7 +27,68 @@ public class MainActivity extends AppCompatActivity {
         wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
             @Override
             public void onSelectionChange(int i) {
-                selectedPositionText.setText("selected: " +(i + 1));
+                if (i+1==1)
+                {
+                    selectedPositionText.setText("selected: Korean Food");
+                }
+
+                else if (i+1==2)
+                {
+                    selectedPositionText.setText("selected: Japanese Food");
+                }
+
+                else if (i+1==3)
+                {
+                    selectedPositionText.setText("selected: Western Food");
+
+                }
+
+                else if (i+1==4)
+                {
+                    selectedPositionText.setText("selected: Chinese Food");
+                }
+
+                else if (i+1==5)
+                {
+                    selectedPositionText.setText("selected: Italian Food");
+                }
+
+                else if (i+1==6)
+                {
+                    selectedPositionText.setText("selected: Thai Food");
+                }
+
+                else if (i+1==7)
+                {
+                    selectedPositionText.setText("selected: Vietnamese Food");
+                }
+
+                else if (i+1==8)
+                {
+                    selectedPositionText.setText("selected: Fast Food");
+                }
+
+                else if (i+1==9)
+                {
+                    selectedPositionText.setText("selected: Cafe");
+                }
+
+                else if (i+1==10)
+                {
+                    selectedPositionText.setText("selected: Buffet");
+                }
+
+                else if (i+1==11)
+                {
+                    selectedPositionText.setText("selected: Dessert");
+                }
+
+                else
+                {
+                    selectedPositionText.setText("selected: Greek Food");
+                }
+
+
             }
         });
 

@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
-                android:text = "#11 -> Desert"
+                android:text = "#11 -> Dessert"
                 android:textSize="20sp" />
 
             <TextView

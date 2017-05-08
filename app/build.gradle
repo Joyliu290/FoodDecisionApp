@@ -27,5 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile files('libs/stanford-android-lib.jar')
     compile files('libs/wheel-menu-library.jar')
+    compile 'com.koushikdutta.ion:ion:2.+'
     testCompile 'junit:junit:4.12'
 }
