@@ -18,21 +18,22 @@ import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import static com.example.joyli.fooddecisionapp.R.id.wheelMenu;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
 
-    private static final int MY_PERMISSION_REQUEST_CODE=7171;
-    private static final int PLAY_SERVICE_RESOLUTION_REQUEST=7172;
+    private static final int MY_PERMISSION_REQUEST_CODE = 7171;
+    private static final int PLAY_SERVICE_RESOLUTION_REQUEST = 7172;
     private TextView txtCoordinates;
     private Button btnGetCoordinates, btnLocationUpdates;
-    private boolean mRequestingLocationUpdates=false;
+    private boolean mRequestingLocationUpdates = false;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -43,11 +44,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case MY_PERMISSION_REQUEST_CODE:
-                if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
-                {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (checkPlayServices())
                         buildGoogleApiClient();
                 }
@@ -61,106 +60,66 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtCoordinates = (TextView)findViewById(R.id.txtCoordinates);
-        btnGetCoordinates=(Button)findViewById(R.id.btnGetCoordinates);
-        btnLocationUpdates=(Button)findViewById(R.id.btnTrackLocation);
+        txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
+        btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
+        btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED )
-        { //RUNTIME REQUEST PERMISSION
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
 
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
 
-            },MY_PERMISSION_REQUEST_CODE);
+            }, MY_PERMISSION_REQUEST_CODE);
 
-        }
-
-        else
-        {
-            if(checkPlayServices())
-            {
+        } else {
+            if (checkPlayServices()) {
                 buildGoogleApiClient();
                 createLocationRequest();
             }
         }
 
 
-
         wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
         wheelMenu.setDivCount(12);
         wheelMenu.setWheelImage(R.drawable.wheel);
-        selectedPositionText =(TextView) findViewById (R.id.selected_position_text);
-        selectedPositionText.setText("selected: " + (wheelMenu.getSelectedPosition()+1));
+        selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
+        selectedPositionText.setText("selected: " + (wheelMenu.getSelectedPosition() + 1));
 
         wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
             @Override
             public void onSelectionChange(int i) {
-                if (i+1==1)
-                {
+                if (i + 1 == 1) {
                     selectedPositionText.setText("selected: Korean Food");
-                }
-
-                else if (i+1==2)
-                {
+                } else if (i + 1 == 2) {
                     selectedPositionText.setText("selected: Japanese Food");
-                }
-
-                else if (i+1==3)
-                {
+                } else if (i + 1 == 3) {
                     selectedPositionText.setText("selected: Western Food");
 
-                }
-
-                else if (i+1==4)
-                {
+                } else if (i + 1 == 4) {
                     selectedPositionText.setText("selected: Chinese Food");
-                }
-
-                else if (i+1==5)
-                {
+                } else if (i + 1 == 5) {
                     selectedPositionText.setText("selected: Italian Food");
-                }
-
-                else if (i+1==6)
-                {
+                } else if (i + 1 == 6) {
                     selectedPositionText.setText("selected: Thai Food");
-                }
-
-                else if (i+1==7)
-                {
+                } else if (i + 1 == 7) {
                     selectedPositionText.setText("selected: Vietnamese Food");
-                }
-
-                else if (i+1==8)
-                {
+                } else if (i + 1 == 8) {
                     selectedPositionText.setText("selected: Fast Food");
-                }
-
-                else if (i+1==9)
-                {
+                } else if (i + 1 == 9) {
                     selectedPositionText.setText("selected: Cafe");
-                }
-
-                else if (i+1==10)
-                {
+                } else if (i + 1 == 10) {
                     selectedPositionText.setText("selected: Buffet");
-                }
-
-                else if (i+1==11)
-                {
+                } else if (i + 1 == 11) {
                     selectedPositionText.setText("selected: Dessert");
-                }
-
-                else
-                {
+                } else {
                     selectedPositionText.setText("selected: Greek Food");
                 }
 
             }
         });
 
-        btnGetCoordinates.setOnClickListener(new View.OnClickListener(){
+        btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -173,21 +132,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mLastLocation=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if(mLastLocation!=null)
-        {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
-            txtCoordinates.setText(latitude+" / "+ longitude);
-        }
+            txtCoordinates.setText(latitude + " / " + longitude);
+        } else
+            txtCoordinates.setText("Couldn't get the location. Make sure you enable the location on the device");
 
     }
 
     private void createLocationRequest() {
-        mLocationRequest= new LocationRequest();
+        mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -203,17 +162,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode!= ConnectionResult.SUCCESS)
-        {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
-            {
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICE_RESOLUTION_REQUEST).show();
 
-            }
-
-            else
-            {
-                Toast.makeText(getApplicationContext(),"This device is not support", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "This device is not support", Toast.LENGTH_LONG).show();
                 finish();
             }
             return false;
@@ -223,7 +177,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        displayLocation();
+        if (mRequestingLocationUpdates)
+            startLocationUpdates();
 
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -234,5 +205,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+mLastLocation=location;
+        displayLocation();
     }
 }
