@@ -18,6 +18,7 @@ import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.provider.FirebaseInitProvider;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private TextView selectedPositionText;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 7171;
-    private static final int PLAY_SERVICE_RESOLUTION_REQUEST = 7172;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 7172;
     private TextView txtCoordinates;
     private Button btnGetCoordinates, btnLocationUpdates;
     private boolean mRequestingLocationUpdates = false;
@@ -52,6 +53,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient!=null)
+        {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+        if(mGoogleApiClient!=null)
+        {
+            mGoogleApiClient.disconnect();
+        }
+
+        super.onStop();
     }
 
     @Override
@@ -128,7 +149,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
+        btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                tooglePeriodicLoctionUpdates();
+            }
+        });
+
+
+    }
+
+    private void tooglePeriodicLoctionUpdates() {
+        if (!mRequestingLocationUpdates)
+        {
+            btnLocationUpdates.setText("Stop Location update");
+            mRequestingLocationUpdates=true;
+            startLocationUpdates();
+        }
+
+        else
+        {
+            btnLocationUpdates.setText("Start Location update");
+            mRequestingLocationUpdates=false;
+            stopLocationUpdates();
+        }
+    }
+
+    private void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
     }
 
     private void displayLocation() {
@@ -164,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICE_RESOLUTION_REQUEST).show();
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
 
             } else {
                 Toast.makeText(getApplicationContext(), "This device is not support", Toast.LENGTH_LONG).show();
@@ -199,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
 
     }
 
@@ -209,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onLocationChanged(Location location) {
-mLastLocation=location;
+        mLastLocation=location;
         displayLocation();
     }
 }

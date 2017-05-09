@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity = "center"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="120dp"
+                android:layout_marginLeft="250dp"
                 android:text = "|"
                 android:textSize="20sp" />
 
@@ -132,7 +132,7 @@
                 android:id="@+id/selected_position_text"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="200dp"
                 android:textSize="20sp"/>
             
             <TextView
