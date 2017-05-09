@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
 
+
+
         wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
         wheelMenu.setDivCount(12);
         wheelMenu.setWheelImage(R.drawable.wheel);
@@ -157,6 +160,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
+        btnGetCoordinates.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                displayLocation();
+
+            }
+        });
+
+
+    }
+
+    private void displayLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED ) {
+            return;
+        }
+        mLastLocation=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(mLastLocation!=null)
+        {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            txtCoordinates.setText(latitude+" / "+ longitude);
+        }
 
     }
 
