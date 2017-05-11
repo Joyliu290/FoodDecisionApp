@@ -30,7 +30,7 @@ dependencies {
     compile files('libs/wheel-menu-library.jar')
     compile 'com.koushikdutta.ion:ion:2.+'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.yelp.clientlib:yelp-android:3.0.0'
     compile 'com.google.android.gms:play-services:10.2.4'
 }
 

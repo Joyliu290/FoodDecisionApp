@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private ListView mListView;
 
-    public static final String URL = "https://api.yelp.com/v3/businesses/search?term=korean&latitude=43.858081&longitude=-79.290339";
+    public static final String URL = "https://api.learn2crack.com/android/jsonandroid/";
     private List<HashMap<String, String>> mAndroidMapList = new ArrayList<>();
 
     private static final String KEY_NAME = "name";
@@ -103,45 +103,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onStop();
     }
 
-    public void foodClick(View view){
-        Ion.with(this)
-                .load("https://api.yelp.com/v3/businesses/search?term=korean&latitude=43.858081&longitude=-79.290339")
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        processName(result);
-                    }
-                });
-    }
-
-    private void processName(String result)
-    {
-        try {
-            JSONObject json = new JSONObject(result);
-            JSONArray a = json.getJSONArray("businesses");
-            for (int i = 0; i < a.length(); i++) {
-                JSONObject foodName = a.getJSONObject(i);
-                String name = foodName.getString("name");
-                loadName(name);
-            }
-
-        } catch (JSONException jsone) {
-            Log.wtf("help", jsone);
-
-        }
-    }
-
-    public void loadName (String name)
-    {
-        String[] NAME = new String[10];
-        for (int i =0; i<10;i++)
-        {
-            NAME[i]=name;
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -166,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 createLocationRequest();
             }
         }
-
 
         wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
         wheelMenu.setDivCount(12);
@@ -231,15 +191,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onLoaded(List<AndroidVersion> businessList){
+    public void onLoaded(List<AndroidVersion> androidList){
 
-        for (AndroidVersion businesses : businessList) {
+        for (AndroidVersion android : androidList) {
 
             HashMap<String, String> map = new HashMap<>();
 
-            map.put(KEY_NAME, businesses.getName());
-            map.put(KEY_RATING,businesses.getRating());
-            map.put(KEY_LOCATION, businesses.getLocation());
+            map.put(KEY_NAME, android.getName());
+            map.put(KEY_RATING,android.getRating());
+            map.put(KEY_LOCATION, android.getLocation());
 
             mAndroidMapList.add(map);
         }
