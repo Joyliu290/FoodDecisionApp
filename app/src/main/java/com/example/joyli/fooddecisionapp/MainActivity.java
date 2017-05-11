@@ -9,23 +9,51 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.SimpleAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.joyli.fooddecisionapp.AndroidVersion;
 import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.provider.FirebaseInitProvider;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import stanford.androidlib.*;
 
 import static com.example.joyli.fooddecisionapp.R.id.wheelMenu;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, LoadJSON.Listener, AdapterView.OnItemClickListener {
+
+    private ListView mListView;
+
+    public static final String URL = "https://api.yelp.com/v3/businesses/search?term=korean&latitude=43.858081&longitude=-79.290339";
+    private List<HashMap<String, String>> mAndroidMapList = new ArrayList<>();
+
+    private static final String KEY_NAME = "name";
+    private static final String KEY_RATING="rating";
+    private static final String KEY_LOCATION= "location";
 
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
@@ -74,6 +102,45 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         super.onStop();
     }
+
+    public void foodClick(View view){
+        Ion.with(this)
+                .load("https://api.yelp.com/v3/businesses/search?term=korean&latitude=43.858081&longitude=-79.290339")
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        processName(result);
+                    }
+                });
+    }
+
+    private void processName(String result)
+    {
+        try {
+            JSONObject json = new JSONObject(result);
+            JSONArray a = json.getJSONArray("businesses");
+            for (int i = 0; i < a.length(); i++) {
+                JSONObject foodName = a.getJSONObject(i);
+                String name = foodName.getString("name");
+                loadName(name);
+            }
+
+        } catch (JSONException jsone) {
+            Log.wtf("help", jsone);
+
+        }
+    }
+
+    public void loadName (String name)
+    {
+        String[] NAME = new String[10];
+        for (int i =0; i<10;i++)
+        {
+            NAME[i]=name;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +224,49 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
+        mListView = (ListView) findViewById(R.id.foodlist);
+        mListView.setOnItemClickListener(this);
+        new LoadJSON(this).execute(URL);
 
     }
 
+    @Override
+    public void onLoaded(List<AndroidVersion> businessList){
+
+        for (AndroidVersion businesses : businessList) {
+
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put(KEY_NAME, businesses.getName());
+            map.put(KEY_RATING,businesses.getRating());
+            map.put(KEY_LOCATION, businesses.getLocation());
+
+            mAndroidMapList.add(map);
+        }
+
+        loadListView();
+    }
+
+    @Override
+    public void onError(){
+        Toast.makeText(this, "Error !", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+    {
+        Toast.makeText(this, mAndroidMapList.get(i).get(KEY_RATING),Toast.LENGTH_LONG).show();
+
+    }
+
+    private void loadListView(){
+        ListAdapter adapter = new SimpleAdapter(MainActivity.this, mAndroidMapList, R.layout.food_list_item,
+                new String[]{KEY_NAME,KEY_RATING,KEY_LOCATION},
+                new int[]{R.id.name, R.id.rating, R.id.location});
+
+        mListView.setAdapter(adapter);
+    }
     private void tooglePeriodicLoctionUpdates() {
         if (!mRequestingLocationUpdates)
         {
@@ -234,13 +341,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -262,4 +362,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLastLocation=location;
         displayLocation();
     }
+
+
+
 }
