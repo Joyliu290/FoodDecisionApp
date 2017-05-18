@@ -12,6 +12,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    packagingOptions{
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/notice'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license'
+        exclude 'META-INF/license.txt'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -30,7 +38,9 @@ dependencies {
     compile files('libs/wheel-menu-library.jar')
     compile 'com.koushikdutta.ion:ion:2.+'
     testCompile 'junit:junit:4.12'
-    compile 'com.yelp.clientlib:yelp-android:3.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.yelp.clientlib:yelp-android:2.0.0'
+    compile 'org.jsoup:jsoup:1.10.1'
     compile 'com.google.android.gms:play-services:10.2.4'
 }
 

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Food Decision App</string>
+    <string name="consumerKey">1CmQ3pxRA0UNGq_jZCLa0A</string>
+    <string name="consumerSecret">2iUAx1OiPV1U8YlHSAgWIb7_V1Q</string>
+    <string name="token">fvcSBu7sZ_Zow8iGuye5kwhp7OLCek_e</string>
+    <string name="tokenSecret">zkoTEsTo3s9frV5NyF28OzgDPYE</string>
 </resources>

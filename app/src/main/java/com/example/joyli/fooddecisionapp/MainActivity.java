@@ -1,26 +1,23 @@
 package com.example.joyli.fooddecisionapp;
 
-import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.joyli.fooddecisionapp.AndroidVersion;
+
 import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,32 +25,35 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.squareup.picasso.Picasso;
+import com.yelp.clientlib.connection.YelpAPI;
+import com.yelp.clientlib.connection.YelpAPIFactory;
+import com.yelp.clientlib.entities.Business;
+import com.yelp.clientlib.entities.Category;
+import com.yelp.clientlib.entities.SearchResponse;
+import com.yelp.clientlib.entities.options.CoordinateOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.*;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import stanford.androidlib.*;
+import okhttp3.*;
+import retrofit2.*;
+import retrofit2.Call;
+import retrofit2.Response;
 
-import static com.example.joyli.fooddecisionapp.R.id.wheelMenu;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, LoadJSON.Listener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private ListView mListView;
-
-    public static final String URL = "https://api.learn2crack.com/android/jsonandroid/";
-    private List<HashMap<String, String>> mAndroidMapList = new ArrayList<>();
-
-    private static final String KEY_NAME = "name";
-    private static final String KEY_RATING="rating";
-    private static final String KEY_LOCATION= "location";
+    TextView mRestaurantTitle, mRate;
+    ImageView mMainImage;
+    OkHttpClient mClient;
+    List<Restaurantdb> mRestaurants;
+    int i;
+    ProgressBar mLoading;
+    boolean waiting = false;
 
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
@@ -86,22 +86,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onStart() {
         super.onStart();
-        if (mGoogleApiClient!=null)
-        {
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
     }
 
     @Override
     protected void onStop() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
-        if(mGoogleApiClient!=null)
-        {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
 
         super.onStop();
     }
+
+    YelpAPIFactory mApiFactory;
+    YelpAPI mYelpAPI;
+    Map<String, String> mParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,67 +186,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        mListView = (ListView) findViewById(R.id.foodlist);
-        mListView.setOnItemClickListener(this);
-        new LoadJSON(this).execute(URL);
+        mRestaurantTitle = (TextView)findViewById(R.id.foodName);
+        mRate=(TextView)findViewById(R.id.rating);
+        mMainImage=(ImageView)findViewById(R.id.mainImage);
+        mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
+        mYelpAPI = mApiFactory.createAPI();
+        mParams = new HashMap<>();
+        mParams.put("term", "food");
+        mClient = new OkHttpClient();
+        mRestaurants = new ArrayList<>();
+        mLoading=(ProgressBar)findViewById(R.id.loading);
+        i=0;
+
+        new FetchPictures().execute();
+        waitForRestaurant(true);
 
     }
 
-    @Override
-    public void onLoaded(List<AndroidVersion> androidList){
 
-        for (AndroidVersion android : androidList) {
-
-            HashMap<String, String> map = new HashMap<>();
-
-            map.put(KEY_NAME, android.getName());
-            map.put(KEY_RATING,android.getRating());
-            map.put(KEY_LOCATION, android.getLocation());
-
-            mAndroidMapList.add(map);
-        }
-
-        loadListView();
-    }
-
-    @Override
-    public void onError(){
-        Toast.makeText(this, "Error !", Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-    {
-        Toast.makeText(this, mAndroidMapList.get(i).get(KEY_RATING),Toast.LENGTH_LONG).show();
-
-    }
-
-    private void loadListView(){
-        ListAdapter adapter = new SimpleAdapter(MainActivity.this, mAndroidMapList, R.layout.food_list_item,
-                new String[]{KEY_NAME,KEY_RATING,KEY_LOCATION},
-                new int[]{R.id.name, R.id.rating, R.id.location});
-
-        mListView.setAdapter(adapter);
-    }
     private void tooglePeriodicLoctionUpdates() {
-        if (!mRequestingLocationUpdates)
-        {
+        if (!mRequestingLocationUpdates) {
             btnLocationUpdates.setText("Stop Location update");
-            mRequestingLocationUpdates=true;
+            mRequestingLocationUpdates = true;
             startLocationUpdates();
-        }
-
-        else
-        {
+        } else {
             btnLocationUpdates.setText("Start Location update");
-            mRequestingLocationUpdates=false;
+            mRequestingLocationUpdates = false;
             stopLocationUpdates();
         }
     }
 
     private void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     private void displayLocation() {
@@ -319,10 +292,129 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation=location;
+        mLastLocation = location;
         displayLocation();
     }
 
+    synchronized public void waitForRestaurant(boolean client){
+        if (client) {
+            if (mRestaurants.size()>i && mRestaurants.get(i).getPictures().size()>mRestaurants.get(i).getCurrPic()){
+                //have the data
+                restaurantCallback();
+            }
+            else {
+                waiting = true;
+                mLoading.setVisibility(View.VISIBLE);
+
+            }
+        }
+        else {
+            if (waiting){
+                restaurantCallback();
+                waiting = false;
+                mLoading.setVisibility(View.INVISIBLE);
+            }
+
+        }
+
+    }
+
+    private void restaurantCallback() {
+        displayRestaurant(mRestaurants.get(i));
+
+    }
+
+    private void displayRestaurant(Restaurantdb r) {
+        Picasso
+                .with (this)
+                .load(r.getPictures().get(r.getCurrPic()))
+                .resize(50,50)
+                .into (mMainImage);
+        mRestaurantTitle.setText(r.getName());
+        mRate.setText(r.getRating());
+
+    }
+
+    class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
+
+        List<Restaurantdb> restaurants=null;
+
+        @Override
+        protected void onProgressUpdate(Restaurantdb...values){
+            super.onProgressUpdate(values);
+            mRestaurants.add(values[0]);
+            waitForRestaurant(false);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            CoordinateOptions coordinate = CoordinateOptions.builder()
+                    .latitude(37.7577)
+                    .longitude(-122.4376).build();
+            Call<SearchResponse> call = mYelpAPI.search(coordinate, mParams);
+            retrofit2.Response<SearchResponse> response = null;
+            try {
+                response = call.execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (response != null) {
+                Log.v("Businesses", response.body().businesses().toString());
+                restaurants = new ArrayList<>();
+                List<Business> businessList = response.body().businesses();
+                Restaurantdb r;
+                int i=0;
+                for (Business b : businessList) {
+                    r = new Restaurantdb(b.name(), b.url());
+                    r.setRating(b.rating() + "" + catToString(b.categories()));
+                    restaurants.add(r);
+                    fetchPictures(r,i);
+                    i++;
+                }
+            }
+            return null;
+        }
+
+        private String catToString(ArrayList<Category> categories) {
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < categories.size(); i++) {
+                sb.append(categories.get(i).name());
+                if (i != categories.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+
+            return sb.toString();
+        }
+
+        private void fetchPictures(Restaurantdb r, final int pos) {
+
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(r.getPicUrl())
+                    .build();
+
+            mClient.newCall(request).enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+                    List<String> pictures = RestaurantScraper.getPictures(response.body().string());
+                    if (pictures.size()>0) {
+                        restaurants.get(pos).setPictures(pictures);
+                        publishProgress(restaurants.get(pos));
+                    }
+
+                }
+            });
+
+        }
+    }
 
 
 }

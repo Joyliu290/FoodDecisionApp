@@ -169,10 +169,43 @@
                 android:id="@+id/btnTrackLocation"
                 android:text="Start location updates"/>
 
-            <ListView
+            <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/foodlist" />
+                android:id="@+id/loading"
+                android:visibility="invisible"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical = "true"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/foodName"
+                android:gravity="center"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:layout_marginTop="10dp"
+                android:id="@+id/rating"/>
+
+            <ImageView
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/mainImage"
+                android:layout_marginLeft="200dp"
+
+                />
+
+
+
 
 
         </LinearLayout>
