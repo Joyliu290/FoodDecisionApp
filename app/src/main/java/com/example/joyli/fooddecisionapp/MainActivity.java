@@ -114,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
         btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
         btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
+        mRestaurantTitle = (TextView)findViewById(R.id.foodName);
+        mRate=(TextView)findViewById(R.id.rating);
+        mMainImage=(ImageView)findViewById(R.id.mainImage);
+        mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
+        mYelpAPI = mApiFactory.createAPI();
+        mParams = new HashMap<>();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
 
@@ -186,13 +192,54 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        mRestaurantTitle = (TextView)findViewById(R.id.foodName);
-        mRate=(TextView)findViewById(R.id.rating);
-        mMainImage=(ImageView)findViewById(R.id.mainImage);
-        mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
-        mYelpAPI = mApiFactory.createAPI();
-        mParams = new HashMap<>();
-        mParams.put("term", "food");
+
+        if (i+1==1){
+            mParams.put("term", "korean");
+
+        }
+
+        else if (i+1==2){
+            mParams.put("term", "japanese");
+        }
+
+        else if (i+1==3){
+            mParams.put("term", "western");
+        }
+
+        else if (i+1==4){
+            mParams.put("term", "chinese");
+        }
+
+        else if (i+1==5){
+            mParams.put("term", "italian");
+        }
+
+        else if (i+1==6){
+            mParams.put("term", "thai");
+        }
+
+        else if (i+1==7){
+            mParams.put("term", "vietnamese");
+        }
+
+        else if (i+1==8){
+            mParams.put("term", "fast+food");
+        }
+
+        else if (i+1==9){
+            mParams.put("term", "cafe");
+        }
+
+        else if (i+1==10){
+            mParams.put("term", "buffet");
+        }
+        else if (i+1==11){
+            mParams.put("term", "dessert");
+        }
+        else if (i+1==12){
+            mParams.put("term", "greek");
+        }
+
         mClient = new OkHttpClient();
         mRestaurants = new ArrayList<>();
         mLoading=(ProgressBar)findViewById(R.id.loading);
@@ -202,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         waitForRestaurant(true);
 
     }
-
 
     private void tooglePeriodicLoctionUpdates() {
         if (!mRequestingLocationUpdates) {
@@ -349,8 +395,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         protected String doInBackground(String... strings) {
             CoordinateOptions coordinate = CoordinateOptions.builder()
-                    .latitude(37.7577)
-                    .longitude(-122.4376).build();
+                    .latitude(43.8581437)
+                    .longitude(-79.2902573).build();
             Call<SearchResponse> call = mYelpAPI.search(coordinate, mParams);
             retrofit2.Response<SearchResponse> response = null;
             try {
