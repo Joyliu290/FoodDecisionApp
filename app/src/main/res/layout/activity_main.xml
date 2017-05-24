@@ -169,25 +169,25 @@
                 android:id="@+id/btnTrackLocation"
                 android:text="Start location updates"/>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/loading"
-                android:visibility="invisible"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical = "true"
-                tools:layout_editor_absoluteY="0dp"
-                tools:layout_editor_absoluteX="0dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/loading"
+                    android:visibility="invisible"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical = "true"
+                     />
+
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:id="@+id/mainImage"
 
                 />
@@ -198,9 +198,9 @@
                 android:text=""
                 android:id="@+id/foodName"
                 android:layout_marginTop="20dp"
+                android:textSize="20sp"
                 android:layout_toRightOf="@+id/mainImage"
                 />
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -208,10 +208,46 @@
                 android:text=""
                 android:layout_below="@+id/foodName"
                 android:layout_toRightOf="@+id/mainImage"
+                android:textSize="20sp"
                 android:id="@+id/rating"/>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/loading2"
+                    android:visibility="invisible"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical = "true"
+                   />
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:id="@+id/mainImage2"
+                    android:layout_below="@id/mainImage"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="hiiiiii"
+                    android:id="@+id/foodName2"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:layout_toRightOf="@+id/mainImage2"
+                    android:layout_below="@+id/mainImage"
+
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="hiii"
+                    android:layout_below="@+id/foodName2"
+                    android:layout_toRightOf="@+id/mainImage2"
+                    android:textSize="20sp"
+                    android:id="@+id/rating2"/>
             </RelativeLayout>
-
-
 
         </LinearLayout>
     </ScrollView>
