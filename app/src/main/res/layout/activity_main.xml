@@ -230,7 +230,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="hiiiiii"
+                    android:text=""
                     android:id="@+id/foodName2"
                     android:layout_marginTop="20dp"
                     android:textSize="20sp"
@@ -242,11 +242,50 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="hiii"
+                    android:text=""
                     android:layout_below="@+id/foodName2"
                     android:layout_toRightOf="@+id/mainImage2"
                     android:textSize="20sp"
                     android:id="@+id/rating2"/>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/loading3"
+                    android:visibility="invisible"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical = "true"
+                    />
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:id="@+id/mainImage3"
+                    android:layout_below="@id/mainImage2"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/foodName3"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:layout_toRightOf="@+id/mainImage3"
+                    android:layout_below="@+id/mainImage2"
+
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/foodName3"
+                    android:layout_toRightOf="@+id/mainImage3"
+                    android:textSize="20sp"
+                    android:id="@+id/rating3"/>
+
+
             </RelativeLayout>
 
         </LinearLayout>
