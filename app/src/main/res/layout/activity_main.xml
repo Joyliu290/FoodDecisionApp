@@ -20,6 +20,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Here are the available food categories"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:text = "#1 -> Korean Food"
                 android:textSize="20sp" />
@@ -115,24 +121,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity = "center"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="250dp"
-                android:text = "|"
+                android:text = "Press button to randomly choose a food category"
                 android:textSize="20sp" />
 
-            <com.anupcowkur.wheelmenu.WheelMenu
-                android:id="@+id/wheelMenu"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
+            <Button
+                android:text="Press to Food"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="116dp"
+                android:layout_marginStart="116dp"
+                android:onClick="clickMeClick"
+                android:id="@+id/pressMe"
+                android:textColorLink="#ffffff" />
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selected_position_text"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="200dp"
                 android:textSize="20sp"/>
             
             <TextView

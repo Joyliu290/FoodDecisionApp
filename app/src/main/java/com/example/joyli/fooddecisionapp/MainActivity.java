@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.*;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int i;
     ProgressBar mLoading, mLoading2, mLoading3;
     boolean waiting = false;
+    Button pressMe;
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
 
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static int FASTEST_INTERVAL = 3000;
     private static int DISPLACEMENT = 10;
     int pageNum=40;
-    boolean newSession = false;
+    boolean choiceIsMade = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -130,22 +132,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mApiFactory2 = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
         mYelpAPI2 = mApiFactory2.createAPI();
         mApiFactory3 = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
-        mYelpAPI3 = mApiFactory3.createAPI();
+        mYelpAPI3 = mApiFactory2.createAPI();
         mParams = new HashMap<>();
         mParams2=new HashMap<>();
         mParams3 = new HashMap<>();
-
-       /** if (savedInstanceState!=null){
-            i = savedInstanceState.getInt(iKey);
-            iLast=savedInstanceState.getInt(iLastKey);
-            mRestaurants=savedInstanceState.getParcelableArrayList(restaurantsKey);
-        }
-
-        else{
-            i=0;
-            iLast=i;
-            newSession=true;
-        } **/
+        final Button pressMe = (Button)findViewById(R.id.pressMe);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
 
@@ -162,142 +153,179 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
 
-        wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
-        wheelMenu.setDivCount(12);
-        wheelMenu.setWheelImage(R.drawable.wheel);
-        selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-        selectedPositionText.setText("selected: " + (wheelMenu.getSelectedPosition() + 1));
+        pressMe.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View view) {
 
-        wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
-            @Override
-            public void onSelectionChange(int i) {
-                if (i + 1 == 1) {
-                    selectedPositionText.setText("selected: Korean Food");
-                } else if (i + 1 == 2) {
-                    selectedPositionText.setText("selected: Japanese Food");
-                } else if (i + 1 == 3) {
-                    selectedPositionText.setText("selected: Western Food");
+                                           Random r = new Random();
+                                           int randomNum=r.nextInt(12-1)+1;
 
-                } else if (i + 1 == 4) {
-                    selectedPositionText.setText("selected: Chinese Food");
-                } else if (i + 1 == 5) {
-                    selectedPositionText.setText("selected: Italian Food");
-                } else if (i + 1 == 6) {
-                    selectedPositionText.setText("selected: Thai Food");
-                } else if (i + 1 == 7) {
-                    selectedPositionText.setText("selected: Vietnamese Food");
-                } else if (i + 1 == 8) {
-                    selectedPositionText.setText("selected: Fast Food");
-                } else if (i + 1 == 9) {
-                    selectedPositionText.setText("selected: Cafe");
-                } else if (i + 1 == 10) {
-                    selectedPositionText.setText("selected: Buffet");
-                } else if (i + 1 == 11) {
-                    selectedPositionText.setText("selected: Dessert");
-                } else {
-                    selectedPositionText.setText("selected: Greek Food");
-                }
+                                           if (randomNum == 1) {
+                                               selectedPositionText.setText("selected: Korean Food");
+                                           } else if (randomNum == 2) {
+                                               selectedPositionText.setText("selected: Japanese Food");
+                                           } else if (randomNum == 3) {
+                                               selectedPositionText.setText("selected: Western Food");
 
-            }
-        });
+                                           } else if (randomNum == 4) {
+                                               selectedPositionText.setText("selected: Chinese Food");
+                                           } else if (randomNum == 5) {
+                                               selectedPositionText.setText("selected: Italian Food");
+                                           } else if (randomNum == 6) {
+                                               selectedPositionText.setText("selected: Thai Food");
+                                           } else if (randomNum == 7) {
+                                               selectedPositionText.setText("selected: Vietnamese Food");
+                                           } else if (randomNum == 8) {
+                                               selectedPositionText.setText("selected: Fast Food");
+                                           } else if (randomNum == 9) {
+                                               selectedPositionText.setText("selected: Cafe");
+                                           } else if (randomNum == 10) {
+                                               selectedPositionText.setText("selected: Buffet");
+                                           } else if (randomNum == 11) {
+                                               selectedPositionText.setText("selected: Dessert");
+                                           } else {
+                                               selectedPositionText.setText("selected: Greek Food");
+                                           }
 
-        btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
+                                           btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                displayLocation();
+                                               @Override
+                                               public void onClick(View view) {
+                                                   displayLocation();
 
-            }
-        });
+                                               }
+                                           });
 
-        btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
+                                           btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                tooglePeriodicLoctionUpdates();
-            }
-        });
+                                               @Override
+                                               public void onClick(View view) {
+                                                   tooglePeriodicLoctionUpdates();
+                                               }
+                                           });
+
+                                           //parameters for yelp
+                                           if (randomNum==1){
+                                               mParams.put("term", "korean");
+                                               //mParams2.put("limit", "5");
+                                               mParams2.put("term", "korean");
+                                               mParams3.put("term", "korean");
+                                               choiceIsMade=true;
+
+                                           }
+
+                                           else if (randomNum==2){
+                                               mParams.put("term", "japanese");
+                                               mParams2.put("term", "japanese");
+                                               mParams3.put("term", "japnese");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==3){
+                                               mParams.put("term", "western");
+                                               mParams2.put("term", "western");
+                                               mParams3.put("term", "western");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==4){
+                                               mParams.put("term", "chinese");
+                                               mParams2.put("term", "chinese");
+                                               mParams3.put("term", "chinese");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==5){
+                                               mParams.put("term", "italian");
+                                               mParams2.put("term", "italian");
+                                               mParams3.put("term", "italian");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==6){
+                                               mParams.put("term", "thai");
+                                               mParams2.put("term", "thai");
+                                               mParams3.put("term", "thai");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==7){
+                                               mParams.put("term", "vietnamese");
+                                               mParams2.put("term", "vietnamese");
+                                               mParams3.put("term", "vietnamese");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==8){
+                                               mParams.put("term", "fast+food");
+                                               mParams2.put("term", "fast+food");
+                                               mParams3.put("term", "fast+food");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==9){
+                                               mParams.put("term", "cafe");
+                                               mParams2.put("term", "cafe");
+                                               mParams3.put("term", "cafe");
+                                               choiceIsMade=true;
+                                           }
+
+                                           else if (randomNum==10){
+                                               mParams.put("term", "buffet");
+                                               mParams2.put("term", "buffet");
+                                               mParams3.put("term", "buffet");
+                                               choiceIsMade=true;
+                                           }
+                                           else if (randomNum==11){
+                                               mParams.put("term", "dessert");
+                                               mParams2.put("term", "dessert");
+                                               mParams3.put("term", "dessert");
+                                               choiceIsMade=true;
+                                           }
+                                           else {
+                                               mParams.put("term", "greek");
+                                               mParams2.put("term", "greek");
+                                               mParams3.put("term", "greek");
+                                               choiceIsMade=true;
+                                           }
+
+                                           mClient = new OkHttpClient();
+                                           mClient2 =new OkHttpClient();
+                                           mClient3 = new OkHttpClient();
+                                           mRestaurants = new ArrayList<>();
+                                           mRestaurants2=new ArrayList<>();
+                                           mLoading=(ProgressBar)findViewById(R.id.loading);
+                                           mLoading2=(ProgressBar)findViewById(R.id.loading2);
+                                           mLoading3=(ProgressBar)findViewById(R.id.loading3);
+                                           i=0;
+                                           int j=0;
+
+                                           if (choiceIsMade==true) {
+
+                                               new FetchPictures().execute("0");
+                                               waitForRestaurant(true);
+                                               //newRestaurant();
+                                               waitForRestaurant2(true);
+
+                                               while (new FetchPictures().execute("0") == new FetchPictures2().execute(Integer.toString(i))) {
+                                                   Log.v("repeat", "hi");
+                                                   i++;
+                                               }
+                                               new FetchPictures2().execute(Integer.toString(i));
+                                               waitForRestaurant3(true);
+
+                                               while (new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures().execute("0") && new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures2().execute(Integer.toString(i))) {
+                                                   Log.v("repeat", "hi");
+                                                   j++;
+                                               }
+                                               new FetchPictures3().execute(Integer.toString(j));
+                                           }
 
 
-        if (i+1==1){
-            mParams.put("term", "korean");
-            //mParams2.put("limit", "5");
-            mParams2.put("term", "korean");
-            mParams3.put("term", "korean");
+                                       }
+                                   }
 
-        }
-
-        else if (i+1==2){
-            mParams.put("term", "japanese");
-        }
-
-        else if (i+1==3){
-            mParams.put("term", "western");
-        }
-
-        else if (i+1==4){
-            mParams.put("term", "chinese");
-        }
-
-        else if (i+1==5){
-            mParams.put("term", "italian");
-        }
-
-        else if (i+1==6){
-            mParams.put("term", "thai");
-        }
-
-        else if (i+1==7){
-            mParams.put("term", "vietnamese");
-        }
-
-        else if (i+1==8){
-            mParams.put("term", "fast+food");
-        }
-
-        else if (i+1==9){
-            mParams.put("term", "cafe");
-        }
-
-        else if (i+1==10){
-            mParams.put("term", "buffet");
-        }
-        else if (i+1==11){
-            mParams.put("term", "dessert");
-        }
-        else if (i+1==12){
-            mParams.put("term", "greek");
-        }
-
-        mClient = new OkHttpClient();
-        mClient2 =new OkHttpClient();
-        mClient3 = new OkHttpClient();
-        mRestaurants = new ArrayList<>();
-        mRestaurants2=new ArrayList<>();
-        mLoading=(ProgressBar)findViewById(R.id.loading);
-        mLoading2=(ProgressBar)findViewById(R.id.loading2);
-        mLoading3=(ProgressBar)findViewById(R.id.loading3);
-        i=0;
-        int j=0;
-
-        new FetchPictures().execute("0");
-        waitForRestaurant(true);
-        //newRestaurant();
-       /** waitForRestaurant2(true);
-
-        while (new FetchPictures().execute("0")==new FetchPictures2().execute(Integer.toString(i))){
-            Log.v("repeat","hi");
-            i++;
-        }
-        new FetchPictures2().execute(Integer.toString(i));
-        waitForRestaurant3(true);
-
-        while (new FetchPictures3().execute(Integer.toString(j))==new FetchPictures().execute("0")&&new FetchPictures3().execute(Integer.toString(j))==new FetchPictures2().execute(Integer.toString(i))){
-            Log.v("repeat","hi");
-            j++;
-        }
-        new FetchPictures3().execute(Integer.toString(j)); **/
-
+                                   );
 
 
     }
