@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mMainImage=(ImageView)findViewById(R.id.mainImage);
         mMainImage2=(ImageView)findViewById(R.id.mainImage2);
         mMainImage3=(ImageView)findViewById(R.id.mainImage3);
+        selectedPositionText = (TextView)findViewById(R.id.selected_position_text);
 
         mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
         mYelpAPI = mApiFactory.createAPI();
