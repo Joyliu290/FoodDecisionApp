@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private static final int MY_PERMISSION_REQUEST_CODE = 7171;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 7172;
-    private TextView txtCoordinates;
-    private Button btnGetCoordinates, btnLocationUpdates;
+    //private TextView txtCoordinates;
+    //private Button btnGetCoordinates, btnLocationUpdates;
     private boolean mRequestingLocationUpdates = false;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
-        btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
-        btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
+       // txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
+        //btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
+        //btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
         mRestaurantTitle = (TextView)findViewById(R.id.foodName);
         mRate=(TextView)findViewById(R.id.rating);
         mRate2=(TextView)findViewById(R.id.rating2);
@@ -137,7 +137,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mParams = new HashMap<>();
         mParams2=new HashMap<>();
         mParams3 = new HashMap<>();
-        final Button pressMe = (Button)findViewById(R.id.pressMe);
+        Button pressMe = (Button)findViewById(R.id.pressMe);
+        mClient = new OkHttpClient();
+        mClient2 =new OkHttpClient();
+        mClient3 = new OkHttpClient();
+        mRestaurants = new ArrayList<>();
+        mRestaurants2=new ArrayList<>();
+        mLoading=(ProgressBar)findViewById(R.id.loading);
+        mLoading2=(ProgressBar)findViewById(R.id.loading2);
+        mLoading3=(ProgressBar)findViewById(R.id.loading3);
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
 
@@ -154,9 +163,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
 
+  /**      btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                displayLocation();
+
+            }
+        });
+
+        btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                tooglePeriodicLoctionUpdates();
+            }
+        });
+   **/
+
         pressMe.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View view) {
+                                           i=0;
+                                           int j=0;
 
                                            Random r = new Random();
                                            int randomNum=r.nextInt(12-1)+1;
@@ -187,23 +216,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                            } else {
                                                selectedPositionText.setText("selected: Greek Food");
                                            }
-
-                                           btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
-
-                                               @Override
-                                               public void onClick(View view) {
-                                                   displayLocation();
-
-                                               }
-                                           });
-
-                                           btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
-
-                                               @Override
-                                               public void onClick(View view) {
-                                                   tooglePeriodicLoctionUpdates();
-                                               }
-                                           });
 
                                            //parameters for yelp
                                            if (randomNum==1){
@@ -290,16 +302,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                                choiceIsMade=true;
                                            }
 
-                                           mClient = new OkHttpClient();
-                                           mClient2 =new OkHttpClient();
-                                           mClient3 = new OkHttpClient();
-                                           mRestaurants = new ArrayList<>();
-                                           mRestaurants2=new ArrayList<>();
-                                           mLoading=(ProgressBar)findViewById(R.id.loading);
-                                           mLoading2=(ProgressBar)findViewById(R.id.loading2);
-                                           mLoading3=(ProgressBar)findViewById(R.id.loading3);
-                                           i=0;
-                                           int j=0;
+
 
                                            if (choiceIsMade==true) {
 
@@ -308,11 +311,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                                //newRestaurant();
                                                waitForRestaurant2(true);
 
-                                               while (new FetchPictures().execute("0") == new FetchPictures2().execute(Integer.toString(i))) {
+                                               while (new FetchPictures().execute(Integer.toString(i)) == new FetchPictures2().execute(Integer.toString(i))) {
                                                    Log.v("repeat", "hi");
                                                    i++;
                                                }
                                                new FetchPictures2().execute(Integer.toString(i));
+
                                                waitForRestaurant3(true);
 
                                                while (new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures().execute("0") && new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures2().execute(Integer.toString(i))) {
@@ -320,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                                    j++;
                                                }
                                                new FetchPictures3().execute(Integer.toString(j));
+                                               //choiceIsMade =false;
                                            }
 
 
@@ -331,13 +336,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+    public CoordinateOptions yelpLocationUpdate(double latitude, double longitude){
+        CoordinateOptions coordinate = CoordinateOptions.builder()
+                .latitude(latitude)
+                .longitude(longitude).build();
+
+        return coordinate;
+    }
+
     private void tooglePeriodicLoctionUpdates() {
         if (!mRequestingLocationUpdates) {
-            btnLocationUpdates.setText("Stop Location update");
+           // btnLocationUpdates.setText("Stop Location update");
             mRequestingLocationUpdates = true;
             startLocationUpdates();
         } else {
-            btnLocationUpdates.setText("Start Location update");
+            //btnLocationUpdates.setText("Start Location update");
             mRequestingLocationUpdates = false;
             stopLocationUpdates();
         }
@@ -347,17 +360,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
-    private void displayLocation() {
+    public double displayLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+             return 0.0;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
-            txtCoordinates.setText(latitude + " / " + longitude);
+            return latitude;
+
         } else
-            txtCoordinates.setText("Couldn't get the location. Make sure you enable the location on the device");
+            Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+        return 0.0;
+
+    }
+
+    public double displayLocation2() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return 0.0;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            return longitude;
+
+        } else
+            Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+        return 0.0;
 
     }
 
@@ -562,10 +593,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         @Override
         protected String doInBackground(String... params) {
-            CoordinateOptions coordinate = CoordinateOptions.builder()
+          /**  CoordinateOptions coordinate = CoordinateOptions.builder()
                     .latitude(43.8581437)
                     .longitude(-79.2902573).build();
-            retrofit2.Call<SearchResponse> call = mYelpAPI.search(coordinate, mParams);
+
+           **/
+            retrofit2.Call<SearchResponse> call = mYelpAPI.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams);
             retrofit2.Response<SearchResponse> response = null;
             try {
                 response = call.execute();
@@ -635,7 +668,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     .latitude(43.8581437)
                     .longitude(-79.2902573).build();
             mParams2.put("offset",params[0]);
-            retrofit2.Call<SearchResponse> call2 = mYelpAPI2.search(coordinate, mParams2);
+            retrofit2.Call<SearchResponse> call2 = mYelpAPI2.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams2);
             retrofit2.Response<SearchResponse> response2 = null;
             try {
                 response2 = call2.execute();
@@ -705,7 +738,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     .latitude(43.8581437)
                     .longitude(-79.2902573).build();
             mParams3.put("offset", params[0]);
-            retrofit2.Call<SearchResponse> call3 = mYelpAPI3.search(coordinate, mParams3);
+            retrofit2.Call<SearchResponse> call3 = mYelpAPI3.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams3);
             retrofit2.Response<SearchResponse> response3 = null;
             try {
                 response3 = call3.execute();

@@ -142,41 +142,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/selected_position_text"
                 android:textSize="20sp"/>
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:id="@+id/txtLabel"
-                android:layout_marginTop="20dp"
-                android:textSize = "20sp"
-                android:text = "You are now at"
-                android:layout_gravity="center_horizontal"
-                />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtCoordinates"
-                android:layout_marginTop="20dp"
-                android:textSize="20sp"
-                android:text=""
-                android:layout_gravity="center_horizontal"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/btnGetCoordinates"
-                android:text="Get Coordinates"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/btnTrackLocation"
-                android:text="Start location updates"/>
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
