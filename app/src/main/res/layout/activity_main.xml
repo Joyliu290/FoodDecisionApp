@@ -20,15 +20,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Here are the available food categories"
-                android:textSize="20sp"/>
+                android:text="Here are the available Food Categories"
+                android:textSize="12sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:text = "#1 -> Korean Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,15 +36,15 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#2 -> Japanese Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
-                android:text = "#3 -> Western Food"
-                android:textSize="20sp" />
+                android:text = "#3 -> Indian Food"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#4 -> Chinese Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#5 -> Italian Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#6 -> Thai Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#7 -> Vietnamese Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#8 -> Fast Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#9 -> Cafe"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#10 -> Buffet"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#11 -> Dessert"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,13 +116,14 @@
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
                 android:text = "#12 -> Greek Food"
-                android:textSize="20sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text = "Press button to randomly choose a food category"
-                android:textSize="20sp" />
+                android:layout_marginTop="20dp"
+                android:textSize="12sp" />
 
             <Button
                 android:text="Press to Food"
@@ -132,6 +133,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="116dp"
                 android:layout_marginStart="116dp"
+                android:layout_marginTop="20dp"
                 android:onClick="clickMeClick"
                 android:id="@+id/pressMe"
                 android:textColorLink="#ffffff" />
@@ -141,7 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/selected_position_text"
-                android:textSize="20sp"/>
+                android:layout_marginTop="20dp"
+                android:textSize="12sp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -157,10 +160,9 @@
                     android:layout_centerVertical = "true"
                      />
 
-
             <ImageView
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 android:id="@+id/mainImage"
 
                 />
@@ -171,7 +173,7 @@
                 android:text=""
                 android:id="@+id/foodName"
                 android:layout_marginTop="20dp"
-                android:textSize="20sp"
+                android:textSize="12sp"
                 android:layout_toRightOf="@+id/mainImage"
                 />
 
@@ -181,8 +183,17 @@
                 android:text=""
                 android:layout_below="@+id/foodName"
                 android:layout_toRightOf="@+id/mainImage"
-                android:textSize="20sp"
+                android:textSize="12sp"
                 android:id="@+id/rating"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/rating"
+                    android:layout_toRightOf="@+id/mainImage"
+                    android:textSize="12sp"
+                    android:id="@+id/location"/>
 
                 <ProgressBar
                     android:layout_width="wrap_content"
@@ -194,8 +205,8 @@
                    />
 
                 <ImageView
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
                     android:id="@+id/mainImage2"
                     android:layout_below="@id/mainImage"
                     />
@@ -206,7 +217,7 @@
                     android:text=""
                     android:id="@+id/foodName2"
                     android:layout_marginTop="20dp"
-                    android:textSize="20sp"
+                    android:textSize="12sp"
                     android:layout_toRightOf="@+id/mainImage2"
                     android:layout_below="@+id/mainImage"
 
@@ -218,8 +229,17 @@
                     android:text=""
                     android:layout_below="@+id/foodName2"
                     android:layout_toRightOf="@+id/mainImage2"
-                    android:textSize="20sp"
+                    android:textSize="12sp"
                     android:id="@+id/rating2"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/rating2"
+                    android:layout_toRightOf="@+id/mainImage2"
+                    android:textSize="12sp"
+                    android:id="@+id/location2"/>
 
                 <ProgressBar
                     android:layout_width="wrap_content"
@@ -231,8 +251,8 @@
                     />
 
                 <ImageView
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
                     android:id="@+id/mainImage3"
                     android:layout_below="@id/mainImage2"
                     />
@@ -243,7 +263,7 @@
                     android:text=""
                     android:id="@+id/foodName3"
                     android:layout_marginTop="20dp"
-                    android:textSize="20sp"
+                    android:textSize="12sp"
                     android:layout_toRightOf="@+id/mainImage3"
                     android:layout_below="@+id/mainImage2"
 
@@ -255,8 +275,17 @@
                     android:text=""
                     android:layout_below="@+id/foodName3"
                     android:layout_toRightOf="@+id/mainImage3"
-                    android:textSize="20sp"
+                    android:textSize="12sp"
                     android:id="@+id/rating3"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/rating3"
+                    android:layout_toRightOf="@+id/mainImage3"
+                    android:textSize="12sp"
+                    android:id="@+id/location3"/>
 
 
             </RelativeLayout>

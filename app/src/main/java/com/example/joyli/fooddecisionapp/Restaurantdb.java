@@ -8,6 +8,7 @@ public class Restaurantdb {
     private String picUrl;
     private List<String> pictures;
     private String rating;
+    private String location;
     private int currPic;
 
     public Restaurantdb(String name, String mainUrl) {
@@ -35,6 +36,12 @@ public class Restaurantdb {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public String getLocation(){return location;}
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getPicUrl() {

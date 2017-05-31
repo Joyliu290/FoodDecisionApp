@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,8 +30,11 @@ import com.squareup.picasso.Picasso;
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
+import com.yelp.clientlib.entities.Category;
 import com.yelp.clientlib.entities.SearchResponse;
 import com.yelp.clientlib.entities.options.CoordinateOptions;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +48,7 @@ import okhttp3.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    TextView mRestaurantTitle, mRate, mRestaurantTitle2, mRate2, mRate3, mRestaurantTitle3;
+    TextView mRestaurantTitle, mRate, mRestaurantTitle2, mRate2, mRate3, mRestaurantTitle3, mLocation,mLocation2,mLocation3;
     ImageView mMainImage;
     ImageView mMainImage2, mMainImage3;
     OkHttpClient mClient, mClient2, mClient3;
@@ -126,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mMainImage=(ImageView)findViewById(R.id.mainImage);
         mMainImage2=(ImageView)findViewById(R.id.mainImage2);
         mMainImage3=(ImageView)findViewById(R.id.mainImage3);
+        mLocation=(TextView)findViewById(R.id.location);
+        mLocation2=(TextView)findViewById(R.id.location2);
+        mLocation3=(TextView)findViewById(R.id.location3);
+
         selectedPositionText = (TextView)findViewById(R.id.selected_position_text);
 
         mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
@@ -191,30 +199,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                            int randomNum=r.nextInt(12-1)+1;
 
                                            if (randomNum == 1) {
-                                               selectedPositionText.setText("selected: Korean Food");
+                                               selectedPositionText.setText("Selected: Korean Food");
                                            } else if (randomNum == 2) {
-                                               selectedPositionText.setText("selected: Japanese Food");
+                                               selectedPositionText.setText("Selected: Japanese Food");
                                            } else if (randomNum == 3) {
-                                               selectedPositionText.setText("selected: Western Food");
+                                               selectedPositionText.setText("Selected: Indian Food");
 
                                            } else if (randomNum == 4) {
-                                               selectedPositionText.setText("selected: Chinese Food");
+                                               selectedPositionText.setText("Selected: Chinese Food");
                                            } else if (randomNum == 5) {
-                                               selectedPositionText.setText("selected: Italian Food");
+                                               selectedPositionText.setText("Selected: Italian Food");
                                            } else if (randomNum == 6) {
-                                               selectedPositionText.setText("selected: Thai Food");
+                                               selectedPositionText.setText("Selected: Thai Food");
                                            } else if (randomNum == 7) {
-                                               selectedPositionText.setText("selected: Vietnamese Food");
+                                               selectedPositionText.setText("Selected: Vietnamese Food");
                                            } else if (randomNum == 8) {
-                                               selectedPositionText.setText("selected: Fast Food");
+                                               selectedPositionText.setText("Selected: Fast Food");
                                            } else if (randomNum == 9) {
-                                               selectedPositionText.setText("selected: Cafe");
+                                               selectedPositionText.setText("Selected: Cafe");
                                            } else if (randomNum == 10) {
-                                               selectedPositionText.setText("selected: Buffet");
+                                               selectedPositionText.setText("Selected: Buffet");
                                            } else if (randomNum == 11) {
-                                               selectedPositionText.setText("selected: Dessert");
+                                               selectedPositionText.setText("Selected: Dessert");
                                            } else {
-                                               selectedPositionText.setText("selected: Greek Food");
+                                               selectedPositionText.setText("Selected: Greek Food");
                                            }
 
                                            //parameters for yelp
@@ -235,9 +243,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                            }
 
                                            else if (randomNum==3){
-                                               mParams.put("term", "western");
-                                               mParams2.put("term", "western");
-                                               mParams3.put("term", "western");
+                                               mParams.put("term", "indian");
+                                               mParams2.put("term", "indian");
+                                               mParams3.put("term", "indian");
                                                choiceIsMade=true;
                                            }
 
@@ -332,15 +340,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                    }
 
                                    );
-
-
     }
 
     public CoordinateOptions yelpLocationUpdate(double latitude, double longitude){
         CoordinateOptions coordinate = CoordinateOptions.builder()
                 .latitude(latitude)
                 .longitude(longitude).build();
-
         return coordinate;
     }
 
@@ -489,6 +494,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .into (mMainImage);
         mRestaurantTitle.setText(r.getName());
         mRate.setText(r.getRating());
+        mLocation.setText(r.getLocation());
 
     }
 
@@ -532,6 +538,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .into (mMainImage2);
         mRestaurantTitle2.setText(r2.getName());
         mRate2.setText(r2.getRating());
+        mLocation2.setText(r2.getLocation());
 
     }
 
@@ -575,8 +582,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .into (mMainImage3);
         mRestaurantTitle3.setText(r3.getName());
         mRate3.setText(r3.getRating());
+        mLocation3.setText(r3.getLocation());
 
     }
+
+
 
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
@@ -613,8 +623,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Restaurantdb r;
                 int i=0;
                 for (Business b : businessList) {
-                    r = new Restaurantdb("   Restaurant Name: " + b.name(), b.url());
-                    r.setRating("   Rating: " + b.rating() + "" );
+                    r = new Restaurantdb("   Restaurant Name: " + b.name(), b.url()); //3 spaces
+                    r.setRating("   Rating: " + b.rating());
+                    r.setLocation("   Address: " + b.location().displayAddress().toString());
                     restaurants.add(r);
                     fetchPictures(r,i);
                     i++;
@@ -623,6 +634,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             return null;
         }
+
+        private String catToString(ArrayList<Category> categories) {
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < categories.size(); i++) {
+                sb.append(categories.get(i).name());
+                if (i != categories.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+
+            return sb.toString();
+        }
+
 
         private void fetchPictures(Restaurantdb r, final int pos) {
 
@@ -650,6 +675,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         }
     }
+
+
 
     class FetchPictures2 extends AsyncTask<String, Restaurantdb,String> {
 
@@ -685,7 +712,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 for (Business b2 : businessList2) {
                     Log.v("Businesses", response2.body().businesses().toString());
                     r2 = new Restaurantdb("   Restaurant Name: " + b2.name(), b2.url());
-                    r2.setRating("   Rating: " + b2.rating() + "" );
+                    r2.setRating("   Rating: " + b2.rating() );
+                    r2.setLocation("   Address: "+ b2.location().displayAddress().toString());
+
                     restaurants2.add(r2);
                     fetchPictures2(r2,i);
                     i++;
@@ -755,7 +784,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 for (Business b3 : businessList2) {
                     Log.v("Businesses", response3.body().businesses().toString());
                     r3 = new Restaurantdb("   Restaurant Name: " + b3.name(), b3.url());
-                    r3.setRating("   Rating: " + b3.rating() + "");
+                    r3.setRating("   Rating: " + b3.rating());
+                    r3.setLocation("   Address: "+b3.location().displayAddress().toString());
+
                     restaurants3.add(r3);
                     fetchPictures3(r3, i);
                     i++;
