@@ -10,7 +10,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listview2"
+        android:id="@+id/listview"
         android:cacheColorHint="@android:color/holo_blue_light"
         android:fadeScrollbars="true"
         android:isScrollContainer="true"

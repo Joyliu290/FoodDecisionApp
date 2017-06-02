@@ -1,6 +1,7 @@
 package com.example.joyli.fooddecisionapp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -48,6 +49,7 @@ import okhttp3.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    SQLdatabaseActivity myDB;
     TextView mRestaurantTitle, mRate, mRestaurantTitle2, mRate2, mRate3, mRestaurantTitle3, mLocation,mLocation2,mLocation3;
     ImageView mMainImage;
     ImageView mMainImage2, mMainImage3;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int i;
     ProgressBar mLoading, mLoading2, mLoading3;
     boolean waiting = false;
-    Button pressMe;
+    Button pressMe, button_view;
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
 
@@ -118,23 +120,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
+        // txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
         //btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
         //btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
-        mRestaurantTitle = (TextView)findViewById(R.id.foodName);
-        mRate=(TextView)findViewById(R.id.rating);
-        mRate2=(TextView)findViewById(R.id.rating2);
-        mRate3=(TextView)findViewById(R.id.rating3);
-        mRestaurantTitle2=(TextView)findViewById(R.id.foodName2);
-        mRestaurantTitle3=(TextView)findViewById(R.id.foodName3);
-        mMainImage=(ImageView)findViewById(R.id.mainImage);
-        mMainImage2=(ImageView)findViewById(R.id.mainImage2);
-        mMainImage3=(ImageView)findViewById(R.id.mainImage3);
-        mLocation=(TextView)findViewById(R.id.location);
-        mLocation2=(TextView)findViewById(R.id.location2);
-        mLocation3=(TextView)findViewById(R.id.location3);
+        mRestaurantTitle = (TextView) findViewById(R.id.foodName);
+        mRate = (TextView) findViewById(R.id.rating);
+        mRate2 = (TextView) findViewById(R.id.rating2);
+        mRate3 = (TextView) findViewById(R.id.rating3);
+        mRestaurantTitle2 = (TextView) findViewById(R.id.foodName2);
+        mRestaurantTitle3 = (TextView) findViewById(R.id.foodName3);
+        mMainImage = (ImageView) findViewById(R.id.mainImage);
+        mMainImage2 = (ImageView) findViewById(R.id.mainImage2);
+        mMainImage3 = (ImageView) findViewById(R.id.mainImage3);
+        mLocation = (TextView) findViewById(R.id.location);
+        mLocation2 = (TextView) findViewById(R.id.location2);
+        mLocation3 = (TextView) findViewById(R.id.location3);
 
-        selectedPositionText = (TextView)findViewById(R.id.selected_position_text);
+        selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
 
         mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
         mYelpAPI = mApiFactory.createAPI();
@@ -143,17 +145,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mApiFactory3 = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
         mYelpAPI3 = mApiFactory2.createAPI();
         mParams = new HashMap<>();
-        mParams2=new HashMap<>();
+        mParams2 = new HashMap<>();
         mParams3 = new HashMap<>();
-        Button pressMe = (Button)findViewById(R.id.pressMe);
+        Button pressMe = (Button) findViewById(R.id.pressMe);
         mClient = new OkHttpClient();
-        mClient2 =new OkHttpClient();
+        mClient2 = new OkHttpClient();
         mClient3 = new OkHttpClient();
         mRestaurants = new ArrayList<>();
-        mRestaurants2=new ArrayList<>();
-        mLoading=(ProgressBar)findViewById(R.id.loading);
-        mLoading2=(ProgressBar)findViewById(R.id.loading2);
-        mLoading3=(ProgressBar)findViewById(R.id.loading3);
+        mRestaurants2 = new ArrayList<>();
+        mLoading = (ProgressBar) findViewById(R.id.loading);
+        mLoading2 = (ProgressBar) findViewById(R.id.loading2);
+        mLoading3 = (ProgressBar) findViewById(R.id.loading3);
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
@@ -170,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 createLocationRequest();
             }
         }
+    }
 
   /**      btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
 
@@ -189,157 +192,222 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
    **/
 
-        pressMe.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View view) {
-                                           i=0;
-                                           int j=0;
+  public void clickMeClick (View view) {
 
-                                           Random r = new Random();
-                                           int randomNum=r.nextInt(12-1)+1;
+        i=0;
+        int j=0;
 
-                                           if (randomNum == 1) {
-                                               selectedPositionText.setText("Selected: Korean Food");
-                                           } else if (randomNum == 2) {
-                                               selectedPositionText.setText("Selected: Japanese Food");
-                                           } else if (randomNum == 3) {
-                                               selectedPositionText.setText("Selected: Indian Food");
+        Random r = new Random();
+        int randomNum=r.nextInt(12-1)+1;
 
-                                           } else if (randomNum == 4) {
-                                               selectedPositionText.setText("Selected: Chinese Food");
-                                           } else if (randomNum == 5) {
-                                               selectedPositionText.setText("Selected: Italian Food");
-                                           } else if (randomNum == 6) {
-                                               selectedPositionText.setText("Selected: Thai Food");
-                                           } else if (randomNum == 7) {
-                                               selectedPositionText.setText("Selected: Vietnamese Food");
-                                           } else if (randomNum == 8) {
-                                               selectedPositionText.setText("Selected: Fast Food");
-                                           } else if (randomNum == 9) {
-                                               selectedPositionText.setText("Selected: Cafe");
-                                           } else if (randomNum == 10) {
-                                               selectedPositionText.setText("Selected: Buffet");
-                                           } else if (randomNum == 11) {
-                                               selectedPositionText.setText("Selected: Dessert");
-                                           } else {
-                                               selectedPositionText.setText("Selected: Greek Food");
-                                           }
+        if (randomNum == 1) {
+            selectedPositionText.setText("Selected: Korean Food");
+        } else if (randomNum == 2) {
+            selectedPositionText.setText("Selected: Japanese Food");
+        } else if (randomNum == 3) {
+            selectedPositionText.setText("Selected: Indian Food");
 
-                                           //parameters for yelp
-                                           if (randomNum==1){
-                                               mParams.put("term", "korean");
-                                               //mParams2.put("limit", "5");
-                                               mParams2.put("term", "korean");
-                                               mParams3.put("term", "korean");
-                                               choiceIsMade=true;
+        } else if (randomNum == 4) {
+            selectedPositionText.setText("Selected: Chinese Food");
+        } else if (randomNum == 5) {
+            selectedPositionText.setText("Selected: Italian Food");
+        } else if (randomNum == 6) {
+            selectedPositionText.setText("Selected: Thai Food");
+        } else if (randomNum == 7) {
+            selectedPositionText.setText("Selected: Vietnamese Food");
+        } else if (randomNum == 8) {
+            selectedPositionText.setText("Selected: Fast Food");
+        } else if (randomNum == 9) {
+            selectedPositionText.setText("Selected: Cafe");
+        } else if (randomNum == 10) {
+            selectedPositionText.setText("Selected: Buffet");
+        } else if (randomNum == 11) {
+            selectedPositionText.setText("Selected: Dessert");
+        } else {
+            selectedPositionText.setText("Selected: Greek Food");
+        }
 
-                                           }
+        //parameters for yelp
+        if (randomNum==1){
+            mParams.put("term", "korean");
+            //mParams2.put("limit", "5");
+            mParams2.put("term", "korean");
+            mParams3.put("term", "korean");
+            choiceIsMade=true;
 
-                                           else if (randomNum==2){
-                                               mParams.put("term", "japanese");
-                                               mParams2.put("term", "japanese");
-                                               mParams3.put("term", "japnese");
-                                               choiceIsMade=true;
-                                           }
+        }
 
-                                           else if (randomNum==3){
-                                               mParams.put("term", "indian");
-                                               mParams2.put("term", "indian");
-                                               mParams3.put("term", "indian");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==2){
+            mParams.put("term", "japanese");
+            mParams2.put("term", "japanese");
+            mParams3.put("term", "japnese");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==4){
-                                               mParams.put("term", "chinese");
-                                               mParams2.put("term", "chinese");
-                                               mParams3.put("term", "chinese");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==3){
+            mParams.put("term", "indian");
+            mParams2.put("term", "indian");
+            mParams3.put("term", "indian");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==5){
-                                               mParams.put("term", "italian");
-                                               mParams2.put("term", "italian");
-                                               mParams3.put("term", "italian");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==4){
+            mParams.put("term", "chinese");
+            mParams2.put("term", "chinese");
+            mParams3.put("term", "chinese");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==6){
-                                               mParams.put("term", "thai");
-                                               mParams2.put("term", "thai");
-                                               mParams3.put("term", "thai");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==5){
+            mParams.put("term", "italian");
+            mParams2.put("term", "italian");
+            mParams3.put("term", "italian");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==7){
-                                               mParams.put("term", "vietnamese");
-                                               mParams2.put("term", "vietnamese");
-                                               mParams3.put("term", "vietnamese");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==6){
+            mParams.put("term", "thai");
+            mParams2.put("term", "thai");
+            mParams3.put("term", "thai");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==8){
-                                               mParams.put("term", "fast+food");
-                                               mParams2.put("term", "fast+food");
-                                               mParams3.put("term", "fast+food");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==7){
+            mParams.put("term", "vietnamese");
+            mParams2.put("term", "vietnamese");
+            mParams3.put("term", "vietnamese");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==9){
-                                               mParams.put("term", "cafe");
-                                               mParams2.put("term", "cafe");
-                                               mParams3.put("term", "cafe");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==8){
+            mParams.put("term", "fast+food");
+            mParams2.put("term", "fast+food");
+            mParams3.put("term", "fast+food");
+            choiceIsMade=true;
+        }
 
-                                           else if (randomNum==10){
-                                               mParams.put("term", "buffet");
-                                               mParams2.put("term", "buffet");
-                                               mParams3.put("term", "buffet");
-                                               choiceIsMade=true;
-                                           }
-                                           else if (randomNum==11){
-                                               mParams.put("term", "dessert");
-                                               mParams2.put("term", "dessert");
-                                               mParams3.put("term", "dessert");
-                                               choiceIsMade=true;
-                                           }
-                                           else {
-                                               mParams.put("term", "greek");
-                                               mParams2.put("term", "greek");
-                                               mParams3.put("term", "greek");
-                                               choiceIsMade=true;
-                                           }
+        else if (randomNum==9){
+            mParams.put("term", "cafe");
+            mParams2.put("term", "cafe");
+            mParams3.put("term", "cafe");
+            choiceIsMade=true;
+        }
 
+        else if (randomNum==10){
+            mParams.put("term", "buffet");
+            mParams2.put("term", "buffet");
+            mParams3.put("term", "buffet");
+            choiceIsMade=true;
+        }
+        else if (randomNum==11){
+            mParams.put("term", "dessert");
+            mParams2.put("term", "dessert");
+            mParams3.put("term", "dessert");
+            choiceIsMade=true;
+        }
+        else {
+            mParams.put("term", "greek");
+            mParams2.put("term", "greek");
+            mParams3.put("term", "greek");
+            choiceIsMade=true;
+        }
 
+        if (choiceIsMade==true) {
 
-                                           if (choiceIsMade==true) {
+            new FetchPictures().execute("0");
+            waitForRestaurant(true);
+            //newRestaurant();
+            waitForRestaurant2(true);
 
-                                               new FetchPictures().execute("0");
-                                               waitForRestaurant(true);
-                                               //newRestaurant();
-                                               waitForRestaurant2(true);
+            new FetchPictures().execute("5");
 
-                                               while (new FetchPictures().execute(Integer.toString(i)) == new FetchPictures2().execute(Integer.toString(i))) {
-                                                   Log.v("repeat", "hi");
-                                                   i++;
-                                               }
-                                               new FetchPictures2().execute(Integer.toString(i));
+            while (new FetchPictures().execute(Integer.toString(i)) == new FetchPictures2().execute(Integer.toString(i))) {
+                Log.v("repeat", "hi");
+                i++;
+            }
+            new FetchPictures2().execute(Integer.toString(i));
 
-                                               waitForRestaurant3(true);
+            waitForRestaurant3(true);
 
-                                               while (new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures().execute("0") && new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures2().execute(Integer.toString(i))) {
-                                                   Log.v("repeat", "hi");
-                                                   j++;
-                                               }
-                                               new FetchPictures3().execute(Integer.toString(j));
-                                               //choiceIsMade =false;
-                                           }
+            while (new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures().execute("0") && new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures2().execute(Integer.toString(i))) {
+                Log.v("repeat", "hi");
+                j++;
+            }
+            new FetchPictures3().execute(Integer.toString(j));
 
 
-                                       }
-                                   }
+        }
 
-                                   );
+  }
+
+  public void clickMeClick2(View view){
+      Intent viewlist = new Intent ("com.example.joyli.fooddecisionapp.ViewList");
+      startActivity(viewlist);
+
+  }
+
+    public void clickMeClickSave (View view){
+        myDB = new SQLdatabaseActivity(this);
+
+
+        String newEntry = mRestaurantTitle.getText().toString();
+        if (mRestaurantTitle.length() != 0) {
+            Log.v("show", "show");
+            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+            AddData(newEntry);
+
+        } else {
+            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
+        }
+
+        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+
+    }
+    public void clickMeClickSave2 (View view){
+        myDB = new SQLdatabaseActivity(this);
+
+
+        String newEntry = mRestaurantTitle2.getText().toString();
+        if (mRestaurantTitle2.length() != 0) {
+            Log.v("show", "show");
+            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+            AddData(newEntry);
+
+        } else {
+            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
+        }
+
+        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+    }
+    public void clickMeClickSave3 (View view){
+        myDB = new SQLdatabaseActivity(this);
+
+
+        String newEntry = mRestaurantTitle3.getText().toString();
+        if (mRestaurantTitle3.length() != 0) {
+            Log.v("show", "show");
+            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+            AddData(newEntry);
+
+        } else {
+            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
+        }
+
+        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
+    }
+
+    public void AddData (String newEntry) {
+        boolean insertData = myDB.addData(newEntry);
+
+        if (insertData ==true) {
+
+            Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            Toast.makeText(this, "Something went wrong",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public CoordinateOptions yelpLocationUpdate(double latitude, double longitude){
@@ -461,12 +529,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     synchronized public void waitForRestaurant(boolean client){
         if (client) {
-            if (mRestaurants.size()>0 && mRestaurants.get(0).getPictures().size()>mRestaurants.get(0).getCurrPic()){
+            if (mRestaurants.size()>i && mRestaurants.get(i).getPictures().size()>mRestaurants.get(i).getCurrPic()){
                 //have the data
                 restaurantCallback();
             }
             else {
                 waiting = true;
+                Log.v("debug", "appear");
                 mLoading.setVisibility(View.VISIBLE);
 
             }
@@ -483,11 +552,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    private void restaurantCallback() {
-            displayRestaurant(mRestaurants.get(0));
+    private void restaurantCallback() {displayRestaurant(mRestaurants.get(0));
     }
 
     private void displayRestaurant(Restaurantdb r) {
+
+        Log.v("appear", "appear");
         Picasso
                 .with (this)
                 .load(r.getPictures().get(r.getCurrPic()))
@@ -509,7 +579,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             else {
                 waiting = true;
-                //Log.v("2debug", "hurry");
+                Log.v("2debug", "hurry");
                 mLoading2.setVisibility(View.VISIBLE);
             }
         }
@@ -531,7 +601,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayRestaurant2(Restaurantdb r2) {
-
+        Log.v("appear", "appear");
         Picasso
                 .with(this)
                 .load(r2.getPictures().get(r2.getCurrPic()))
@@ -545,13 +615,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     synchronized public void waitForRestaurant3(boolean client3){
 
         if (client3) {
-            Log.v("3","hi");
+
 
             if (mRestaurants3.size()>i && mRestaurants3.get(i).getPictures().size()>mRestaurants3.get(i).getCurrPic()){
                 //have the data
                 restaurantCallback3();
             }
             else {
+                Log.v("3","appear");
                 waiting = true;
                 mLoading3.setVisibility(View.VISIBLE);
 
@@ -560,7 +631,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         else {
 
             if (!waiting){
-
+                Log.v("3","hi");
                 restaurantCallback3();
                 waiting = false;
                 mLoading3.setVisibility(View.INVISIBLE);
@@ -575,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayRestaurant3(Restaurantdb r3) {
-
+        Log.v("appear", "appear");
         Picasso
                 .with(this)
                 .load(r3.getPictures().get(r3.getCurrPic()))
@@ -585,8 +656,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocation3.setText(r3.getLocation());
 
     }
-
-
 
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
@@ -821,6 +890,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         }
     }
+
 
 
 }

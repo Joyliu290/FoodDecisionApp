@@ -164,6 +164,7 @@
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/mainImage"
+                android:onClick="clickMeClickSave"
 
                 />
 
@@ -209,6 +210,7 @@
                     android:layout_height="125dp"
                     android:id="@+id/mainImage2"
                     android:layout_below="@id/mainImage"
+                    android:onClick="clickMeClickSave2"
                     />
 
                 <TextView
@@ -255,6 +257,7 @@
                     android:layout_height="125dp"
                     android:id="@+id/mainImage3"
                     android:layout_below="@id/mainImage2"
+                    android:onClick="clickMeClickSave3"
                     />
 
                 <TextView
@@ -286,6 +289,16 @@
                     android:layout_toRightOf="@+id/mainImage3"
                     android:textSize="12sp"
                     android:id="@+id/location3"/>
+
+                <Button
+                    android:text="SHOW ME THE LIST"
+                    android:layout_width="246dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/buttonMe"
+                    android:onClick="clickMeClick2"
+                    android:layout_below="@+id/mainImage3"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="0.72" />
 
 
             </RelativeLayout>
