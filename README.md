@@ -1,5 +1,7 @@
 # FoodDecisionApp
-Since me and my friends are indecisive people, I decided to make an app that would choose a food style randomly through a spinner, and I will integrate Yelp's API to sugggest the best and closest restaurant for the chosen food style to the user. 
-The first page app has a pie-shaped wheel with 12 numbers on it that are split evenly. Each numbering indicates a different style of food, for example Japanese food or Chinese food. Whichever food style that the spinner lands on will be the food style that user will be eating. Then, the app will take the user to the second screen, which will include Yelp's API to suggest the closest and best rated restaurant given the location of the user and the chosen food style. 
+Since me and my friends are indecisive people, I decided to make an app that would choose a food style randomly and uses Yelp's API to sugggest the best rated restaurants for the chosen food style to the user. I also integrated Google Location API to track the user's current location to provide the closest restaurant. 
 
-Finish integrating Yelp API, currently working to format everything into a listView. 
+The main screen of this app shows the available food categories, and once the user presses the button, it will randomly choose a food category and lists the best rated and closest restaurants. 
+
+User can also save a restaurant for future references by clicking on the image of the restaurant, and that restaurant's name will be saved in the SQL database. If the user click the bottom button, it will take the user to the next screen where the database can be viewed. 
+
