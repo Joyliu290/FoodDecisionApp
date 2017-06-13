@@ -733,11 +733,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 @Override
                 public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
 
-                    List<String> pictures = RestaurantScraper.getPictures(response.body().string());
+                 /**   List<String> pictures = RestaurantScraper.getPictures(response.body().string());
                     if (pictures.size()>0) {
                         restaurants.get(pos).setPictures(pictures);
                         publishProgress(restaurants.get(pos));
-                    }
+                    } **/
 
                 }
             });
@@ -807,11 +807,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 @Override
                 public void onResponse(okhttp3.Call call, okhttp3.Response response2) throws IOException {
 
-                    List<String> pictures2 = RestaurantScraper.getPictures(response2.body().string());
+                   /** List<String> pictures2 = RestaurantScraper.getPictures(response2.body().string());
                     if (pictures2.size()>0) {
                         restaurants2.get(pos2).setPictures(pictures2);
                         publishProgress(restaurants2.get(pos2));
-                    }
+                    }**/
 
                 }
             });
@@ -879,11 +879,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 @Override
                 public void onResponse(okhttp3.Call call, okhttp3.Response response3) throws IOException {
 
-                    List<String> pictures2 = RestaurantScraper.getPictures(response3.body().string());
+                  /**  List<String> pictures2 = RestaurantScraper.getPictures(response3.body().string());
                     if (pictures2.size() > 0) {
                         restaurants3.get(pos3).setPictures(pictures2);
                         publishProgress(restaurants3.get(pos3));
-                    }
+                    } **/
 
                 }
             });
