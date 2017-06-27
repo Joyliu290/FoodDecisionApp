@@ -6,8 +6,10 @@ public class Restaurantdb {
     private String name;
     private String mainUrl;
     private String picUrl;
+    private String url;
     private List<String> pictures;
     private String rating;
+    private String review;
     private String location;
     private int currPic;
 
@@ -33,6 +35,12 @@ public class Restaurantdb {
     public String getRating() {
         return rating;
     }
+
+    public String getUrl () {return url;}
+    public void setUrl (String url) {this.url=url;}
+
+    public String getReviews() {return review; }
+    public void setReview(String review) {this.review = review;}
 
     public void setRating(String rating) {
         this.rating = rating;

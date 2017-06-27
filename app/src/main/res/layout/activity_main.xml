@@ -178,14 +178,21 @@
                 android:layout_toRightOf="@+id/mainImage"
                 />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_below="@+id/foodName"
-                android:layout_toRightOf="@+id/mainImage"
-                android:textSize="12sp"
-                android:id="@+id/rating"/>
+                <ImageView
+                    android:id="@+id/rating"
+                    android:layout_width="300dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/location"
+                    android:layout_toRightOf="@+id/mainImage" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_below="@+id/foodName"
+                    android:layout_toRightOf="@+id/mainImage"
+                    android:textSize="12sp"
+                    android:id="@+id/location"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -194,7 +201,16 @@
                     android:layout_below="@+id/rating"
                     android:layout_toRightOf="@+id/mainImage"
                     android:textSize="12sp"
-                    android:id="@+id/location"/>
+                    android:id="@+id/reviews"/>
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:onClick="clickMeClickLogo"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/reviews"
+                    android:layout_marginLeft="150dp"
+                    android:layout_toRightOf="@+id/mainImage" />
 
                 <ProgressBar
                     android:layout_width="wrap_content"
@@ -213,6 +229,13 @@
                     android:onClick="clickMeClickSave2"
                     />
 
+                <ImageView
+                    android:id="@+id/rating2"
+                    android:layout_width="300dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/location2"
+                    android:layout_toRightOf="@+id/mainImage2" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -222,8 +245,8 @@
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/mainImage2"
                     android:layout_below="@+id/mainImage"
-
                     />
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -232,7 +255,7 @@
                     android:layout_below="@+id/foodName2"
                     android:layout_toRightOf="@+id/mainImage2"
                     android:textSize="12sp"
-                    android:id="@+id/rating2"/>
+                    android:id="@+id/location2"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -241,7 +264,17 @@
                     android:layout_below="@+id/rating2"
                     android:layout_toRightOf="@+id/mainImage2"
                     android:textSize="12sp"
-                    android:id="@+id/location2"/>
+                    android:id="@+id/reviews2"/>
+
+                <ImageView
+                    android:id="@+id/logo2"
+                    android:onClick="clickMeClickLogo2"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/reviews2"
+                    android:layout_marginLeft="150dp"
+                    android:layout_toRightOf="@+id/mainImage2" />
+
 
                 <ImageView
                     android:layout_width="125dp"
@@ -263,6 +296,14 @@
 
                     />
 
+                <ImageView
+                    android:id="@+id/rating3"
+                    android:layout_width="300dp"
+                    android:layout_height="25dp"
+                    android:layout_below="@+id/location3"
+                    android:layout_toRightOf="@+id/mainImage3" />
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -270,7 +311,7 @@
                     android:layout_below="@+id/foodName3"
                     android:layout_toRightOf="@+id/mainImage3"
                     android:textSize="12sp"
-                    android:id="@+id/rating3"/>
+                    android:id="@+id/location3"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -279,7 +320,17 @@
                     android:layout_below="@+id/rating3"
                     android:layout_toRightOf="@+id/mainImage3"
                     android:textSize="12sp"
-                    android:id="@+id/location3"/>
+                    android:id="@+id/reviews3"/>
+
+                <ImageView
+                    android:id="@+id/logo3"
+                    android:onClick="clickMeClickLogo3"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/reviews3"
+                    android:layout_marginLeft="150dp"
+                    android:layout_toRightOf="@+id/mainImage3" />
+
 
                 <Button
                     android:text="SHOW ME THE LIST"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,9 +51,8 @@ import okhttp3.*;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     SQLdatabaseActivity myDB;
-    TextView mRestaurantTitle, mRate, mRestaurantTitle2, mRate2, mRate3, mRestaurantTitle3, mLocation,mLocation2,mLocation3;
-    ImageView mMainImage;
-    ImageView mMainImage2, mMainImage3;
+    TextView mRestaurantTitle, mRestaurantTitle2, mRestaurantTitle3, mLocation,mLocation2,mLocation3, mReview, mReview2, mReview3;
+    ImageView mMainImage,mMainImage2, mMainImage3, mRate, mLogo, mRate2, mRate3, mLogo3, mLogo2;
     OkHttpClient mClient, mClient2, mClient3;
     private ArrayList<Restaurantdb> mRestaurants;
     private List<Restaurantdb> mRestaurants2 = new ArrayList<>();
@@ -60,19 +60,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int i;
     ProgressBar mLoading, mLoading2, mLoading3;
     boolean waiting = false;
-    Button pressMe, button_view;
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 7171;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 7172;
-    //private TextView txtCoordinates;
-    //private Button btnGetCoordinates, btnLocationUpdates;
     private boolean mRequestingLocationUpdates = false;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private int iLast=0;
 
     private static int UPDATE_INTERVAL = 5000;
     private static int FASTEST_INTERVAL = 3000;
@@ -124,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
         //btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
         mRestaurantTitle = (TextView) findViewById(R.id.foodName);
-        mRate = (TextView) findViewById(R.id.rating);
-        mRate2 = (TextView) findViewById(R.id.rating2);
-        mRate3 = (TextView) findViewById(R.id.rating3);
+        mRate = (ImageView) findViewById(R.id.rating);
+        mRate2 = (ImageView) findViewById(R.id.rating2);
+        mRate3 = (ImageView) findViewById(R.id.rating3);
         mRestaurantTitle2 = (TextView) findViewById(R.id.foodName2);
         mRestaurantTitle3 = (TextView) findViewById(R.id.foodName3);
         mMainImage = (ImageView) findViewById(R.id.mainImage);
@@ -135,6 +131,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocation = (TextView) findViewById(R.id.location);
         mLocation2 = (TextView) findViewById(R.id.location2);
         mLocation3 = (TextView) findViewById(R.id.location3);
+        mReview = (TextView)findViewById(R.id.reviews);
+        mReview2 = (TextView)findViewById(R.id.reviews2);
+        mReview3 = (TextView)findViewById(R.id.reviews3);
+        mLogo = (ImageView)findViewById(R.id.logo);
+        mLogo2 = (ImageView)findViewById(R.id.logo2);
+        mLogo3 = (ImageView)findViewById(R.id.logo3);
 
         selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
 
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRestaurants2 = new ArrayList<>();
         mLoading = (ProgressBar) findViewById(R.id.loading);
         mLoading2 = (ProgressBar) findViewById(R.id.loading2);
-        mLoading3 = (ProgressBar) findViewById(R.id.loading3);
+        //mLoading3 = (ProgressBar) findViewById(R.id.loading3);
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
@@ -174,29 +176,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-  /**      btnGetCoordinates.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                displayLocation();
-
-            }
-        });
-
-        btnLocationUpdates.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                tooglePeriodicLoctionUpdates();
-            }
-        });
-   **/
-
   public void clickMeClick (View view) {
-
         i=0;
         int j=0;
-
         Random r = new Random();
         int randomNum=r.nextInt(12-1)+1;
 
@@ -234,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mParams2.put("term", "korean");
             mParams3.put("term", "korean");
             choiceIsMade=true;
-
         }
 
         else if (randomNum==2){
@@ -334,10 +315,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 j++;
             }
             new FetchPictures3().execute(Integer.toString(j));
-
-
         }
-
   }
 
   public void clickMeClick2(View view){
@@ -348,7 +326,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public void clickMeClickSave (View view){
         myDB = new SQLdatabaseActivity(this);
-
 
         String newEntry = mRestaurantTitle.getText().toString();
         if (mRestaurantTitle.length() != 0) {
@@ -558,18 +535,59 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private void displayRestaurant(Restaurantdb r) {
 
         Log.v("appear", "appear");
-        Picasso
+        /**Picasso
                 .with (this)
                 .load(r.getPictures().get(r.getCurrPic()))
-                .into (mMainImage);
+                .into (mMainImage); **/
         mRestaurantTitle.setText(r.getName());
-        mRate.setText(r.getRating());
         mLocation.setText(r.getLocation());
 
+        if (r.getRating().equals("0")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_0","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+       else if (r.getRating().equals("1")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+       else if (r.getRating().equals("1.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1_half","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("2")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("2.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2_half","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("3")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("3.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3_half","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("4")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else if (r.getRating().equals("4.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4_half","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        else{
+            int drawableID= this.getResources().getIdentifier ("stars_regular_5","mipmap-hdpi", getPackageName());
+            mRate.setImageResource(drawableID);
+        }
+        mReview.setText(r.getReviews());
+        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        mLogo.setImageResource(logoID);
     }
 
     synchronized public void waitForRestaurant2(boolean client2){
-
         //Log.v("debug", "hurry");
         if (client2) {
 
@@ -591,9 +609,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 waiting = false;
                 mLoading2.setVisibility(View.INVISIBLE);
             }
-
         }
-
     }
 
     private void restaurantCallback2() {
@@ -604,19 +620,66 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Log.v("appear", "appear");
         Picasso
                 .with(this)
-                .load(r2.getPictures().get(r2.getCurrPic()))
+                .load(r2.getPicUrl())
                 .into (mMainImage2);
         mRestaurantTitle2.setText(r2.getName());
-        mRate2.setText(r2.getRating());
         mLocation2.setText(r2.getLocation());
+        if (r2.getRating().equals("0")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_0","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("1")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("1.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1_half","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("2")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("2.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2_half","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("3")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("3.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3_half","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("4")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else if (r2.getRating().equals("4.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4_half","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        else{
+            int drawableID= this.getResources().getIdentifier ("stars_regular_5","mipmap-hdpi", getPackageName());
+            mRate2.setImageResource(drawableID);
+        }
+        mReview2.setText(r2.getReviews());
+        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        mLogo2.setImageResource(logoID);
+
+    }
+
+    public void clickMeClickLogo (View view){
+        Restaurantdb restaurantdb;
+        //restaurantdb.getUrl()
+
+
 
     }
 
     synchronized public void waitForRestaurant3(boolean client3){
-
         if (client3) {
-
-
             if (mRestaurants3.size()>i && mRestaurants3.get(i).getPictures().size()>mRestaurants3.get(i).getCurrPic()){
                 //have the data
                 restaurantCallback3();
@@ -625,7 +688,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Log.v("3","appear");
                 waiting = true;
                 mLoading3.setVisibility(View.VISIBLE);
-
             }
         }
         else {
@@ -636,11 +698,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 waiting = false;
                 mLoading3.setVisibility(View.INVISIBLE);
             }
-
         }
-
     }
-
     private void restaurantCallback3() {
         displayRestaurant3(mRestaurants3.get(i));
     }
@@ -652,11 +711,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .load(r3.getPictures().get(r3.getCurrPic()))
                 .into (mMainImage3);
         mRestaurantTitle3.setText(r3.getName());
-        mRate3.setText(r3.getRating());
-        mLocation3.setText(r3.getLocation());
-
+        mLocation2.setText(r3.getLocation());
+        if (r3.getRating().equals("0")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_0","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("1")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("1.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_1_half","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("2")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("2.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_2_half","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("3")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("3.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_3_half","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("4")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else if (r3.getRating().equals("4.5")){
+            int drawableID= this.getResources().getIdentifier ("stars_regular_4_half","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        else{
+            int drawableID= this.getResources().getIdentifier ("stars_regular_5","mipmap-hdpi", getPackageName());
+            mRate3.setImageResource(drawableID);
+        }
+        mReview3.setText(r3.getReviews());
+        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        mLogo3.setImageResource(logoID);
     }
-
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
 
@@ -693,30 +792,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 int i=0;
                 for (Business b : businessList) {
                     r = new Restaurantdb("   Restaurant Name: " + b.name(), b.url()); //3 spaces
-                    r.setRating("   Rating: " + b.rating());
+                    r.setRating(b.rating().toString());
                     r.setLocation("   Address: " + b.location().displayAddress().toString());
+                    r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
+                    r.setUrl(b.url());
                     restaurants.add(r);
-                    fetchPictures(r,i);
+                    //fetchPictures(r,i);
                     i++;
                 }
                 //Log.v("rest", Integer.toString(restaurants.size()));
             }
             return null;
         }
-
-        private String catToString(ArrayList<Category> categories) {
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < categories.size(); i++) {
-                sb.append(categories.get(i).name());
-                if (i != categories.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-
-            return sb.toString();
-        }
-
 
         private void fetchPictures(Restaurantdb r, final int pos) {
 
@@ -729,23 +816,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 public void onFailure(okhttp3.Call call, IOException e) {
 
                 }
-
                 @Override
                 public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
-                 /**   List<String> pictures = RestaurantScraper.getPictures(response.body().string());
-                    if (pictures.size()>0) {
-                        restaurants.get(pos).setPictures(pictures);
-                        publishProgress(restaurants.get(pos));
-                    } **/
 
                 }
             });
 
         }
     }
-
-
 
     class FetchPictures2 extends AsyncTask<String, Restaurantdb,String> {
 
@@ -781,11 +859,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 for (Business b2 : businessList2) {
                     Log.v("Businesses", response2.body().businesses().toString());
                     r2 = new Restaurantdb("   Restaurant Name: " + b2.name(), b2.url());
-                    r2.setRating("   Rating: " + b2.rating() );
-                    r2.setLocation("   Address: "+ b2.location().displayAddress().toString());
+                    r2.setRating(b2.rating().toString());
+                    r2.setLocation("   Address: " + b2.location().displayAddress().toString());
+                    r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
+                    r2.setReview(b2.url());
 
                     restaurants2.add(r2);
-                    fetchPictures2(r2,i);
+                    //fetchPictures2(r2,i);
                     i++;
                 }
             }
@@ -853,11 +933,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 for (Business b3 : businessList2) {
                     Log.v("Businesses", response3.body().businesses().toString());
                     r3 = new Restaurantdb("   Restaurant Name: " + b3.name(), b3.url());
-                    r3.setRating("   Rating: " + b3.rating());
-                    r3.setLocation("   Address: "+b3.location().displayAddress().toString());
+                    r3.setRating(b3.rating().toString());
+                    r3.setLocation("   Address: " + b3.location().displayAddress().toString());
+                    r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
 
                     restaurants3.add(r3);
-                    fetchPictures3(r3, i);
+                    //fetchPictures3(r3, i);
                     i++;
                 }
             }
@@ -865,7 +946,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
 
         private void fetchPictures3(Restaurantdb r3, final int pos3) {
-
             okhttp3.Request request3 = new okhttp3.Request.Builder()
                     .url(r3.getPicUrl())
                     .build();
@@ -873,7 +953,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mClient2.newCall(request3).enqueue(new okhttp3.Callback() {
                 @Override
                 public void onFailure(okhttp3.Call call, IOException e) {
-
                 }
 
                 @Override
