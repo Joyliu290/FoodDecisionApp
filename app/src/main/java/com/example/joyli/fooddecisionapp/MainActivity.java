@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,11 +51,11 @@ import okhttp3.*;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    SQLdatabaseActivity myDB;
+    //SQLdatabaseActivity myDB;
     TextView mRestaurantTitle, mRestaurantTitle2, mRestaurantTitle3, mLocation,mLocation2,mLocation3, mReview, mReview2, mReview3;
     ImageView mMainImage,mMainImage2, mMainImage3, mRate, mLogo, mRate2, mRate3, mLogo3, mLogo2;
     OkHttpClient mClient, mClient2, mClient3;
-    private ArrayList<Restaurantdb> mRestaurants;
+    private ArrayList<Restaurantdb> mRestaurants= new ArrayList<>();
     private List<Restaurantdb> mRestaurants2 = new ArrayList<>();
     private List<Restaurantdb> mRestaurants3 = new ArrayList<>();
     int i;
@@ -155,8 +156,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mClient3 = new OkHttpClient();
         mRestaurants = new ArrayList<>();
         mRestaurants2 = new ArrayList<>();
-        mLoading = (ProgressBar) findViewById(R.id.loading);
-        mLoading2 = (ProgressBar) findViewById(R.id.loading2);
+        //mLoading = (ProgressBar) findViewById(R.id.loading);
+       // mLoading2 = (ProgressBar) findViewById(R.id.loading2);
         //mLoading3 = (ProgressBar) findViewById(R.id.loading3);
 
 
@@ -318,13 +319,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
   }
 
-  public void clickMeClick2(View view){
+ /** public void clickMeClick2(View view){
       Intent viewlist = new Intent ("com.example.joyli.fooddecisionapp.ViewList");
       startActivity(viewlist);
 
   }
 
-    public void clickMeClickSave (View view){
+   /** public void clickMeClickSave (View view){
         myDB = new SQLdatabaseActivity(this);
 
         String newEntry = mRestaurantTitle.getText().toString();
@@ -385,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Something went wrong",Toast.LENGTH_LONG).show();
         }
 
-    }
+    } **/
 
     public CoordinateOptions yelpLocationUpdate(double latitude, double longitude){
         CoordinateOptions coordinate = CoordinateOptions.builder()
@@ -513,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             else {
                 waiting = true;
                 Log.v("debug", "appear");
-                mLoading.setVisibility(View.VISIBLE);
+                //mLoading.setVisibility(View.VISIBLE);
 
             }
         }
@@ -522,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Log.v("debug", "hurry");
                 restaurantCallback();
                 waiting = false;
-                mLoading.setVisibility(View.INVISIBLE);
+                //mLoading.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -533,7 +534,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayRestaurant(Restaurantdb r) {
-
         Log.v("appear", "appear");
         /**Picasso
                 .with (this)
@@ -583,8 +583,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mRate.setImageResource(drawableID);
         }
         mReview.setText(r.getReviews());
-        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        int logoID = this.getResources().getIdentifier("yelp_trademark_rgb_outline", "drawable", getPackageName());
         mLogo.setImageResource(logoID);
+    }
+
+    public void clickMeClickLogo (View view){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://www.yelp.com"));
+        startActivity(intent);
+
     }
 
     synchronized public void waitForRestaurant2(boolean client2){
@@ -598,7 +607,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             else {
                 waiting = true;
                 Log.v("2debug", "hurry");
-                mLoading2.setVisibility(View.VISIBLE);
+                //mLoading2.setVisibility(View.VISIBLE);
             }
         }
         else {
@@ -607,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                  Log.v("2debug2", "hurry");
                 restaurantCallback2();
                 waiting = false;
-                mLoading2.setVisibility(View.INVISIBLE);
+                //mLoading2.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -618,10 +627,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void displayRestaurant2(Restaurantdb r2) {
         Log.v("appear", "appear");
-        Picasso
+        /*Picasso
                 .with(this)
                 .load(r2.getPicUrl())
-                .into (mMainImage2);
+                .into (mMainImage2); */
         mRestaurantTitle2.setText(r2.getName());
         mLocation2.setText(r2.getLocation());
         if (r2.getRating().equals("0")){
@@ -665,16 +674,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mRate2.setImageResource(drawableID);
         }
         mReview2.setText(r2.getReviews());
-        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        int logoID = this.getResources().getIdentifier("yelp_trademark_rgb_outline", "drawable", getPackageName());
         mLogo2.setImageResource(logoID);
 
     }
 
-    public void clickMeClickLogo (View view){
-        Restaurantdb restaurantdb;
-        //restaurantdb.getUrl()
-
-
+    public void clickMeClickLogo2 (View view){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://www.yelp.com"));
+        startActivity(intent);
 
     }
 
@@ -687,7 +697,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             else {
                 Log.v("3","appear");
                 waiting = true;
-                mLoading3.setVisibility(View.VISIBLE);
+                //mLoading3.setVisibility(View.VISIBLE);
             }
         }
         else {
@@ -696,7 +706,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Log.v("3","hi");
                 restaurantCallback3();
                 waiting = false;
-                mLoading3.setVisibility(View.INVISIBLE);
+                //mLoading3.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -706,10 +716,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void displayRestaurant3(Restaurantdb r3) {
         Log.v("appear", "appear");
-        Picasso
+       /** Picasso
                 .with(this)
                 .load(r3.getPictures().get(r3.getCurrPic()))
-                .into (mMainImage3);
+                .into (mMainImage3); **/
         mRestaurantTitle3.setText(r3.getName());
         mLocation2.setText(r3.getLocation());
         if (r3.getRating().equals("0")){
@@ -753,8 +763,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mRate3.setImageResource(drawableID);
         }
         mReview3.setText(r3.getReviews());
-        int logoID = this.getResources().getIdentifier("Yelp_trademark_RGB_outline", "drawable", getPackageName());
+        int logoID = this.getResources().getIdentifier("yelp_trademark_rgb_outline", "drawable", getPackageName());
         mLogo3.setImageResource(logoID);
+    }
+
+    public void clickMeClickLogo3 (View view){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://www.yelp.com"));
+        startActivity(intent);
+
     }
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {

@@ -151,20 +151,10 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/loading"
-                    android:visibility="invisible"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical = "true"
-                     />
-
             <ImageView
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/mainImage"
-                android:onClick="clickMeClickSave"
 
                 />
 
@@ -212,21 +202,13 @@
                     android:layout_marginLeft="150dp"
                     android:layout_toRightOf="@+id/mainImage" />
 
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/loading2"
-                    android:visibility="invisible"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical = "true"
-                   />
+
 
                 <ImageView
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:id="@+id/mainImage2"
                     android:layout_below="@id/mainImage"
-                    android:onClick="clickMeClickSave2"
                     />
 
                 <ImageView
@@ -268,7 +250,6 @@
 
                 <ImageView
                     android:id="@+id/logo2"
-                    android:onClick="clickMeClickLogo2"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_below="@+id/reviews2"
@@ -281,7 +262,6 @@
                     android:layout_height="125dp"
                     android:id="@+id/mainImage3"
                     android:layout_below="@id/mainImage2"
-                    android:onClick="clickMeClickSave3"
                     />
 
                 <TextView
@@ -330,18 +310,6 @@
                     android:layout_below="@+id/reviews3"
                     android:layout_marginLeft="150dp"
                     android:layout_toRightOf="@+id/mainImage3" />
-
-
-                <Button
-                    android:text="SHOW ME THE LIST"
-                    android:layout_width="246dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/buttonMe"
-                    android:onClick="clickMeClick2"
-                    android:layout_below="@+id/mainImage3"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="0.72" />
-
 
             </RelativeLayout>
 
