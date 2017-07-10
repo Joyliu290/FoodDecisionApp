@@ -196,9 +196,9 @@
                 <ImageView
                     android:id="@+id/logo"
                     android:onClick="clickMeClickLogo"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@+id/reviews"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/rating"
                     android:layout_marginLeft="150dp"
                     android:layout_toRightOf="@+id/mainImage" />
 
@@ -250,9 +250,10 @@
 
                 <ImageView
                     android:id="@+id/logo2"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@+id/reviews2"
+                    android:onClick="clickMeClickLogo2"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/rating2"
                     android:layout_marginLeft="150dp"
                     android:layout_toRightOf="@+id/mainImage2" />
 
@@ -305,9 +306,9 @@
                 <ImageView
                     android:id="@+id/logo3"
                     android:onClick="clickMeClickLogo3"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@+id/reviews3"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/rating3"
                     android:layout_marginLeft="150dp"
                     android:layout_toRightOf="@+id/mainImage3" />
 
