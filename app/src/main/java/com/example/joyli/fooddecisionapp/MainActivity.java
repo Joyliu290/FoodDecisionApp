@@ -586,11 +586,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLogo.setImageResource(logoID);
     }
 
+    public String yelpBusinessPage(Restaurantdb r)
+    {
+        String url;
+        url=r.getUrl();
+        return url;
+    }
+
     public void clickMeClickLogo (View view){
+        String url=yelpBusinessPage(mRestaurants.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("https://www.yelp.com"));
+        intent.setData(Uri.parse(url));
         startActivity(intent);
 
     }
@@ -682,10 +690,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void clickMeClickLogo2 (View view){
+        String url = yelpBusinessPage(mRestaurants2.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("https://www.yelp.com"));
+        intent.setData(Uri.parse(url));
         startActivity(intent);
     }
 
@@ -769,10 +778,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void clickMeClickLogo3 (View view){
+        String url = yelpBusinessPage(mRestaurants3.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("https://www.yelp.com"));
+        intent.setData(Uri.parse(url));
         startActivity(intent);
 
     }
@@ -806,14 +816,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Restaurantdb r;
                 int i=0;
                 for (Business b : businessList) {
-                    r = new Restaurantdb("   Restaurant Name: " + b.name(), b.url()); //3 spaces
-                    r.setRating(b.rating().toString());
-                    r.setLocation("   Address: " + b.location().displayAddress().toString());
-                    r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
-                    r.setPicUrl(b.imageUrl());
-                    restaurants.add(r);
-                    fetchPictures(r,i);
-                    i++;
+                    if (b.isClosed()==false){
+                        r = new Restaurantdb("   Restaurant Name: " + b.name() + "----(Open Now)", b.url());
+                        r.setRating(b.rating().toString());
+                        r.setLocation("   Address: " + b.location().displayAddress().toString());
+                        r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
+                        r.setPicUrl(b.imageUrl());
+
+                        r.setUrl(b.url());
+                        restaurants.add(r);
+                        fetchPictures(r,i);
+                        i++;
+                    }
+                    else {
+                        r = new Restaurantdb("   Restaurant Name: " + b.name() + "----(Closed Now)", b.url());
+                        r.setRating(b.rating().toString());
+                        r.setLocation("   Address: " + b.location().displayAddress().toString());
+                        r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
+                        r.setPicUrl(b.imageUrl());
+
+                        r.setUrl(b.url());
+                        restaurants.add(r);
+                        fetchPictures(r,i);
+                        i++;
+                    }
                 }
                 //Log.v("rest", Integer.toString(restaurants.size()));
             }
@@ -870,14 +896,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 int i=0;
                 for (Business b2 : businessList2) {
                     Log.v("Businesses", response2.body().businesses().toString());
-                    r2 = new Restaurantdb("   Restaurant Name: " + b2.name(), b2.url());
-                    r2.setRating(b2.rating().toString());
-                    r2.setLocation("   Address: " + b2.location().displayAddress().toString());
-                    r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
-                    r2.setPicUrl(b2.imageUrl());
-                    restaurants2.add(r2);
-                    fetchPictures2(r2,i);
-                    i++;
+                    if (b2.isClosed()==false){
+                        r2 = new Restaurantdb("   Restaurant Name: " + b2.name() + "----(Open Now)", b2.url());
+                        r2.setRating(b2.rating().toString());
+                        r2.setLocation("   Address: " + b2.location().displayAddress().toString());
+                        r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
+                        r2.setPicUrl(b2.imageUrl());
+
+                        r2.setUrl(b2.url());
+                        restaurants2.add(r2);
+                        fetchPictures2(r2,i);
+                        i++;
+                    }
+                    else {
+                        r2 = new Restaurantdb("   Restaurant Name: " + b2.name() + "----(Closed Now)", b2.url());
+                        r2.setRating(b2.rating().toString());
+                        r2.setLocation("   Address: " + b2.location().displayAddress().toString());
+                        r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
+                        r2.setPicUrl(b2.imageUrl());
+
+                        r2.setUrl(b2.url());
+                        restaurants2.add(r2);
+                        fetchPictures2(r2,i);
+                        i++;
+                    }
                 }
             }
             return null;
@@ -933,14 +975,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 int i = 0;
                 for (Business b3 : businessList3) {
                     Log.v("Businesses", response3.body().businesses().toString());
-                    r3 = new Restaurantdb("   Restaurant Name: " + b3.name(), b3.url());
-                    r3.setRating(b3.rating().toString());
-                    r3.setLocation("   Address: " + b3.location().displayAddress().toString());
-                    r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
-                    r3.setPicUrl(b3.imageUrl());
-                    restaurants3.add(r3);
-                    fetchPictures3(r3, i);
-                    i++;
+                    if (b3.isClosed()==false){
+                        r3 = new Restaurantdb("   Restaurant Name: " + b3.name() + "----(Open Now)", b3.url());
+                        r3.setRating(b3.rating().toString());
+                        r3.setLocation("   Address: " + b3.location().displayAddress().toString());
+                        r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
+                        r3.setPicUrl(b3.imageUrl());
+                        r3.setUrl(b3.url());
+                        restaurants3.add(r3);
+                        fetchPictures3(r3,i);
+                        i++;
+                    }
+                    else {
+                        r3 = new Restaurantdb("   Restaurant Name: " + b3.name() + "----(Closed Now)", b3.url());
+                        r3.setRating(b3.rating().toString());
+                        r3.setLocation("   Address: " + b3.location().displayAddress().toString());
+                        r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
+                        r3.setPicUrl(b3.imageUrl());
+
+                        r3.setUrl(b3.url());
+                        restaurants3.add(r3);
+                        fetchPictures3(r3,i);
+                        i++;
+                    }
                 }
             }
             return null;
