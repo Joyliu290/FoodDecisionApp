@@ -3,6 +3,7 @@ package com.example.joyli.fooddecisionapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.media.Image;
 import android.net.Uri;
@@ -12,6 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -539,8 +545,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .load(r.getPicUrl())
                 .into (mMainImage);
         mRestaurantTitle.setText(r.getName());
+        final Double latitude = r.getLatitude();
+        final Double longitude = r.getLongitude();
+        SpannableString ss = new SpannableString(r.getLocation());
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                Log.v("clickLocation","click");
+                Intent intent =null, chooser=null;
+                intent = new Intent (Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("geo:"+ Double.toString(latitude)+","+Double.toString(longitude)));
+                chooser=Intent.createChooser(intent,"Launch Maps");
+                startActivity(chooser);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        ss.setSpan(clickableSpan, 22, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mLocation.setText(r.getLocation());
-
+        mLocation.setMovementMethod(LinkMovementMethod.getInstance());
+        mLocation.setHighlightColor(Color.TRANSPARENT);
         if (r.getRating().equals("0")){
             int drawableID= this.getResources().getIdentifier ("stars_regular_0","drawable", getPackageName());
             mRate.setImageResource(drawableID);
@@ -819,10 +846,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (b.isClosed()==false){
                         r = new Restaurantdb("   Restaurant Name: " + b.name() + "----(Open Now)", b.url());
                         r.setRating(b.rating().toString());
-                        r.setLocation("   Address: " + b.location().displayAddress().toString());
+                        String location = b.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r.setLocation("   Address: " + location);
                         r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
                         r.setPicUrl(b.imageUrl());
-
+                        r.setLatitude(b.location().coordinate().latitude());
+                        r.setLongitude(b.location().coordinate().longitude());
                         r.setUrl(b.url());
                         restaurants.add(r);
                         fetchPictures(r,i);
@@ -831,11 +861,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     else {
                         r = new Restaurantdb("   Restaurant Name: " + b.name() + "----(Closed Now)", b.url());
                         r.setRating(b.rating().toString());
-                        r.setLocation("   Address: " + b.location().displayAddress().toString());
+                        String location = b.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r.setLocation("   Address: " + location);
                         r.setReview("   Based on " + b.reviewCount().toString() + " Reviews");
                         r.setPicUrl(b.imageUrl());
-
                         r.setUrl(b.url());
+                        r.setLatitude(b.location().coordinate().latitude());
+                        r.setLongitude(b.location().coordinate().longitude());
                         restaurants.add(r);
                         fetchPictures(r,i);
                         i++;
@@ -899,10 +932,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (b2.isClosed()==false){
                         r2 = new Restaurantdb("   Restaurant Name: " + b2.name() + "----(Open Now)", b2.url());
                         r2.setRating(b2.rating().toString());
-                        r2.setLocation("   Address: " + b2.location().displayAddress().toString());
+                        String location = b2.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r2.setLocation("   Address: " + location);
                         r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
                         r2.setPicUrl(b2.imageUrl());
-
+                        r2.setLatitude(b2.location().coordinate().latitude());
+                        r2.setLongitude(b2.location().coordinate().longitude());
                         r2.setUrl(b2.url());
                         restaurants2.add(r2);
                         fetchPictures2(r2,i);
@@ -911,10 +947,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     else {
                         r2 = new Restaurantdb("   Restaurant Name: " + b2.name() + "----(Closed Now)", b2.url());
                         r2.setRating(b2.rating().toString());
-                        r2.setLocation("   Address: " + b2.location().displayAddress().toString());
+                        String location = b2.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r2.setLocation("   Address: " + location);
                         r2.setReview("   Based on " + b2.reviewCount().toString() + " Reviews");
                         r2.setPicUrl(b2.imageUrl());
-
+                        r2.setLatitude(b2.location().coordinate().latitude());
+                        r2.setLongitude(b2.location().coordinate().longitude());
                         r2.setUrl(b2.url());
                         restaurants2.add(r2);
                         fetchPictures2(r2,i);
@@ -978,9 +1017,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (b3.isClosed()==false){
                         r3 = new Restaurantdb("   Restaurant Name: " + b3.name() + "----(Open Now)", b3.url());
                         r3.setRating(b3.rating().toString());
-                        r3.setLocation("   Address: " + b3.location().displayAddress().toString());
+                        String location = b3.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r3.setLocation("   Address: " + location);
                         r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
                         r3.setPicUrl(b3.imageUrl());
+                        r3.setLatitude(b3.location().coordinate().latitude());
+                        r3.setLongitude(b3.location().coordinate().longitude());
                         r3.setUrl(b3.url());
                         restaurants3.add(r3);
                         fetchPictures3(r3,i);
@@ -989,10 +1032,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     else {
                         r3 = new Restaurantdb("   Restaurant Name: " + b3.name() + "----(Closed Now)", b3.url());
                         r3.setRating(b3.rating().toString());
-                        r3.setLocation("   Address: " + b3.location().displayAddress().toString());
+                        String location = b3.location().displayAddress().toString();
+                        location = location.replaceAll("[\\[\\](){}]","");
+                        r3.setLocation("   Address: " + location);
                         r3.setReview("   Based on " + b3.reviewCount().toString() + " Reviews");
                         r3.setPicUrl(b3.imageUrl());
-
+                        r3.setLatitude(b3.location().coordinate().latitude());
+                        r3.setLongitude(b3.location().coordinate().longitude());
                         r3.setUrl(b3.url());
                         restaurants3.add(r3);
                         fetchPictures3(r3,i);

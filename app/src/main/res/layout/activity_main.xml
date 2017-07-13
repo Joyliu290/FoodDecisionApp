@@ -182,6 +182,8 @@
                     android:layout_below="@+id/foodName"
                     android:layout_toRightOf="@+id/mainImage"
                     android:textSize="12sp"
+                    android:linksClickable="true"
+                    android:clickable="true"
                     android:id="@+id/location"/>
 
                 <TextView

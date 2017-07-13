@@ -6,6 +6,8 @@ public class Restaurantdb {
     private String name;
     private String mainUrl;
     private String picUrl;
+    private Double latitude;
+    private Double longitude;
     private String url;
     private List<String> pictures;
     private String rating;
@@ -35,6 +37,11 @@ public class Restaurantdb {
     public String getRating() {
         return rating;
     }
+    public Double getLatitude() {return latitude;}
+    public Double getLongitude() {return longitude;}
+
+    public void setLatitude(Double latitude) {this.latitude = latitude;}
+    public void setLongitude(Double longitude) {this.longitude = longitude;}
 
     public String getUrl () {return url;}
     public void setUrl (String url) {this.url=url;}
