@@ -419,6 +419,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public double displayLocation() {
+        //displays the latitude
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
              return 0.0;
         }
@@ -435,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public double displayLocation2() {
+        //displays the longitude
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return 0.0;
         }
@@ -547,27 +549,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRestaurantTitle.setText(r.getName());
         final Double latitude = r.getLatitude();
         final Double longitude = r.getLongitude();
-        SpannableString ss = new SpannableString(r.getLocation());
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                Log.v("clickLocation","click");
-                Intent intent =null, chooser=null;
-                intent = new Intent (Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("geo:"+ Double.toString(latitude)+","+Double.toString(longitude)));
-                chooser=Intent.createChooser(intent,"Launch Maps");
-                startActivity(chooser);
-            }
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-        ss.setSpan(clickableSpan, 22, 27, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mLocation.setText(r.getLocation());
-        mLocation.setMovementMethod(LinkMovementMethod.getInstance());
-        mLocation.setHighlightColor(Color.TRANSPARENT);
+        //mLocation.setMovementMethod(LinkMovementMethod.getInstance());
+        //mLocation.setHighlightColor(Color.TRANSPARENT);
         if (r.getRating().equals("0")){
             int drawableID= this.getResources().getIdentifier ("stars_regular_0","drawable", getPackageName());
             mRate.setImageResource(drawableID);
@@ -628,6 +612,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         intent.setData(Uri.parse(url));
         startActivity(intent);
 
+    }
+
+    public void clickForMap (View view){
+
+        Double EndLatitude=0.0, EndLongitude=0.0;
+        Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
+        Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
+        EndLatitude=mRestaurants.get(i).getLatitude();
+        EndLongitude=mRestaurants.get(i).getLongitude();
+        Intent intent =null, chooser=null;
+        intent = new Intent (Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(StartLatitude)+","+Double.toString(StartLongitude)+"&daddr="+Double.toString(EndLatitude)+","+Double.toString(EndLongitude)));
+        chooser=Intent.createChooser(intent,"Launch Maps");
+        startActivity(chooser);
     }
 
     synchronized public void waitForRestaurant2(boolean client2){
@@ -725,6 +723,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
+    public void clickForMap2 (View view){
+
+        Double EndLatitude=0.0, EndLongitude=0.0;
+        Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
+        Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
+        EndLatitude=mRestaurants2.get(i).getLatitude();
+        EndLongitude=mRestaurants2.get(i).getLongitude();
+        Intent intent =null, chooser=null;
+        intent = new Intent (Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(StartLatitude)+","+Double.toString(StartLongitude)+"&daddr="+Double.toString(EndLatitude)+","+Double.toString(EndLongitude)));
+        chooser=Intent.createChooser(intent,"Launch Maps");
+        startActivity(chooser);
+    }
+
     synchronized public void waitForRestaurant3(boolean client3){
         if (client3) {
             if (mRestaurants3.size()>i){
@@ -811,7 +823,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.setData(Uri.parse(url));
         startActivity(intent);
+    }
 
+    public void clickForMap3 (View view){
+
+        Double EndLatitude=0.0, EndLongitude=0.0;
+        Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
+        Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
+        EndLatitude=mRestaurants3.get(i).getLatitude();
+        EndLongitude=mRestaurants3.get(i).getLongitude();
+        Intent intent =null, chooser=null;
+        intent = new Intent (Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(StartLatitude)+","+Double.toString(StartLongitude)+"&daddr="+Double.toString(EndLatitude)+","+Double.toString(EndLongitude)));
+        chooser=Intent.createChooser(intent,"Launch Maps");
+        startActivity(chooser);
     }
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
