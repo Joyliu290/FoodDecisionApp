@@ -1,6 +1,9 @@
 package com.example.joyli.fooddecisionapp;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -839,6 +842,43 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(chooser);
     }
 
+    public void goClick (View view){
+        String title = "Food Decision App";
+        Double EndLatitude=0.0, EndLongitude=0.0;
+        Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
+        Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
+        EndLatitude=mRestaurants3.get(i).getLatitude();
+        EndLongitude=mRestaurants3.get(i).getLongitude();
+        Double distance = distance(StartLatitude,StartLongitude,EndLatitude,EndLongitude);
+        distance = distance/0.62137;
+        String subject = "You are "+Double.toString(distance)+"km away from " + mRestaurants3.get(i).getName();
+
+        NotificationManager notif = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notify = new Notification.Builder(getApplicationContext()).setContentTitle(title).setContentText(subject).setContentTitle(title).setSmallIcon(R.mipmap.ic_launcher).build();
+        notify.flags |=Notification.FLAG_AUTO_CANCEL;
+        notif.notify(0,notify);
+    }
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
 
         List<Restaurantdb> restaurants=null;
@@ -1092,6 +1132,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         }
     }
+
 
 
 
