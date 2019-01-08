@@ -197,7 +197,7 @@
 
                 <ImageView
                     android:id="@+id/logo"
-                    android:onClick="clickMeClickLogo"
+                    android:onClick="clickOnFirstRestaurantLogo"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating"
@@ -251,7 +251,7 @@
 
                 <ImageView
                     android:id="@+id/logo2"
-                    android:onClick="clickMeClickLogo2"
+                    android:onClick="clickOnSecondRestaurantLogo"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating2"
@@ -307,7 +307,7 @@
 
                 <ImageView
                     android:id="@+id/logo3"
-                    android:onClick="clickMeClickLogo3"
+                    android:onClick="clicksOnThirdRestaurantLogo"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating3"
@@ -315,14 +315,42 @@
                     android:layout_toRightOf="@+id/mainImage3" />
 
                 <Button
+                    android:id="@+id/go"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/reviews3"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="25dp"
+                    android:onClick="goClick"
+                    android:text="GO"
+                    android:visibility="invisible" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/go"
-                    android:onClick="goClick"
-                    android:layout_toRightOf="@id/mainImage3"
-                    android:layout_below="@+id/rating3"
-                    android:layout_marginLeft="25dp"
-                    android:text="GO"/>
+                    android:visibility="invisible"
+                    android:layout_alignTop="@+id/foodName"
+                    android:layout_centerHorizontal="true" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar3"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_above="@+id/reviews2"
+                    android:layout_alignStart="@+id/progressBar2" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar4"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_below="@+id/foodName3"
+                    android:layout_alignStart="@+id/progressBar3" />
 
 
             </RelativeLayout>

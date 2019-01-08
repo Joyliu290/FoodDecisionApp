@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private List<Restaurantdb> mRestaurants2 = new ArrayList<>();
     private List<Restaurantdb> mRestaurants3 = new ArrayList<>();
     int i,j;
-    //ProgressBar mLoading, mLoading2, mLoading3;
+    ProgressBar mLoading, mLoading2, mLoading3;
     boolean waiting = false;
     private WheelMenu wheelMenu;
     private TextView selectedPositionText;
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     protected void onStop() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
-        }
+        //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        //if (mGoogleApiClient != null) {
+          //  mGoogleApiClient.disconnect();
+        //}
 
         super.onStop();
     }
@@ -125,10 +125,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // txtCoordinates = (TextView) findViewById(R.id.txtCoordinates);
-        //btnGetCoordinates = (Button) findViewById(R.id.btnGetCoordinates);
-        //btnLocationUpdates = (Button) findViewById(R.id.btnTrackLocation);
         mRestaurantTitle = (TextView) findViewById(R.id.foodName);
         mRate = (ImageView) findViewById(R.id.rating);
         mRate2 = (ImageView) findViewById(R.id.rating2);
@@ -166,9 +162,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRestaurants = new ArrayList<>();
         mRestaurants2 = new ArrayList<>();
         mRestaurants3 = new ArrayList<>();
-        //mLoading = (ProgressBar) findViewById(R.id.loading);
-       // mLoading2 = (ProgressBar) findViewById(R.id.loading2);
-        //mLoading3 = (ProgressBar) findViewById(R.id.loading3);
+        mLoading = (ProgressBar) findViewById(R.id.progressBar2);
+        mLoading2 = (ProgressBar) findViewById(R.id.progressBar3);
+        mLoading3 = (ProgressBar) findViewById(R.id.progressBar4);
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //RUNTIME REQUEST PERMISSION
@@ -223,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //parameters for yelp
         if (randomNum==1){
             mParams.put("term", "korean");
-            //mParams2.put("limit", "5");
             mParams2.put("term", "korean");
             mParams3.put("term", "korean");
             choiceIsMade=true;
@@ -329,75 +324,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
   }
 
- /** public void clickMeClick2(View view){
-      Intent viewlist = new Intent ("com.example.joyli.fooddecisionapp.ViewList");
-      startActivity(viewlist);
-
-  }
-
-   /** public void clickMeClickSave (View view){
-        myDB = new SQLdatabaseActivity(this);
-
-        String newEntry = mRestaurantTitle.getText().toString();
-        if (mRestaurantTitle.length() != 0) {
-            Log.v("show", "show");
-            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-            AddData(newEntry);
-
-        } else {
-            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
-        }
-
-        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-
-    }
-    public void clickMeClickSave2 (View view){
-        myDB = new SQLdatabaseActivity(this);
-
-
-        String newEntry = mRestaurantTitle2.getText().toString();
-        if (mRestaurantTitle2.length() != 0) {
-            Log.v("show", "show");
-            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-            AddData(newEntry);
-
-        } else {
-            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
-        }
-
-        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-    }
-    public void clickMeClickSave3 (View view){
-        myDB = new SQLdatabaseActivity(this);
-
-
-        String newEntry = mRestaurantTitle3.getText().toString();
-        if (mRestaurantTitle3.length() != 0) {
-            Log.v("show", "show");
-            Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-            AddData(newEntry);
-
-        } else {
-            Toast.makeText(MainActivity.this, "ERROR!", Toast.LENGTH_LONG).show();
-        }
-
-        //Toast.makeText(getApplicationContext(), "Restaurant is Saved", Toast.LENGTH_LONG).show();
-    }
-
-    public void AddData (String newEntry) {
-        boolean insertData = myDB.addData(newEntry);
-
-        if (insertData ==true) {
-
-            Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_LONG).show();
-        }
-        else {
-
-            Toast.makeText(this, "Something went wrong",Toast.LENGTH_LONG).show();
-        }
-
-    } **/
-
     public CoordinateOptions yelpLocationUpdate(double latitude, double longitude){
         CoordinateOptions coordinate = CoordinateOptions.builder()
                 .latitude(latitude)
@@ -432,11 +358,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             double longitude = mLastLocation.getLongitude();
             return latitude;
 
-        } else
-            Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+        } else{
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
         return 0.0;
 
-    }
+    } //latitude
 
     public double displayLocation2() {
         //displays the longitude
@@ -449,11 +381,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             double longitude = mLastLocation.getLongitude();
             return longitude;
 
-        } else
-            Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+        } else {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Could not get location. Make sure Location is Enabled on Device", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
         return 0.0;
 
-    }
+    } //longtitude
 
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -527,7 +464,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             else {
                 waiting = true;
                 Log.v("no data1", "no data1");
-                //mLoading.setVisibility(View.VISIBLE);
+                mLoading.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading.setVisibility(View.VISIBLE);
             }
         }
         else {
@@ -535,7 +473,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Log.v("debug", "hurry");
                 restaurantCallback();
                 waiting = false;
-                //mLoading.setVisibility(View.INVISIBLE);
+                mLoading.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -544,7 +483,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayRestaurant(Restaurantdb r) {
-        Log.v("appear", "appear");
         Picasso
                 .with (this)
                 .load(r.getPicUrl())
@@ -553,8 +491,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final Double latitude = r.getLatitude();
         final Double longitude = r.getLongitude();
         mLocation.setText(r.getLocation());
-        //mLocation.setMovementMethod(LinkMovementMethod.getInstance());
-        //mLocation.setHighlightColor(Color.TRANSPARENT);
+
         if (r.getRating().equals("0")){
             int drawableID= this.getResources().getIdentifier ("stars_regular_0","drawable", getPackageName());
             mRate.setImageResource(drawableID);
@@ -607,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return url;
     }
 
-    public void clickMeClickLogo (View view){
+    public void clickOnFirstRestaurantLogo(View view){
         String url=yelpBusinessPage(mRestaurants.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
@@ -617,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    public void clickForMap (View view){
+    public void clickForMap(View view){
 
         Double EndLatitude=0.0, EndLongitude=0.0;
         Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
@@ -632,28 +569,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     synchronized public void waitForRestaurant2(boolean client2){
-        //Log.v("debug", "hurry");
         if (client2) {
 
-            if (mRestaurants2.size()>i){
-                //have the data
-                Log.v("have the data", "have the data");
+            if (mRestaurants2.size()>i){ // have the data
                 restaurantCallback2();
             }
             else {
                 waiting = true;
-                Log.v("no data2", "no data2");
-                //mLoading2.setVisibility(View.VISIBLE);
+                mLoading2.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading2.setVisibility(View.VISIBLE);
             }
         }
         else {
-            Log.v("wait", "wait");
-
             if (!waiting){
-                 Log.v("2debug2", "hurry");
                 restaurantCallback2();
                 waiting = false;
-                //mLoading2.setVisibility(View.INVISIBLE);
+                mLoading2.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading2.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -663,12 +595,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void displayRestaurant2(Restaurantdb r2) {
-        Log.v("appear", "appear");
         Picasso
                 .with(this)
                 .load(r2.getPicUrl())
                 .into (mMainImage2);
-        Log.v("name2", "name2");
         mRestaurantTitle2.setText(r2.getName());
         mLocation2.setText(r2.getLocation());
         if (r2.getRating().equals("0")){
@@ -717,7 +647,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    public void clickMeClickLogo2 (View view){
+    public void clickOnSecondRestaurantLogo(View view){
         String url = yelpBusinessPage(mRestaurants2.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
@@ -747,18 +677,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 restaurantCallback3();
             }
             else {
-                Log.v("no data3", "no data3");
                 waiting = true;
-                //mLoading3.setVisibility(View.VISIBLE);
+                mLoading3.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading3.setVisibility(View.VISIBLE);
             }
         }
         else {
 
             if (!waiting){
-                Log.v("3","hi");
                 restaurantCallback3();
                 waiting = false;
-                //mLoading3.setVisibility(View.INVISIBLE);
+                mLoading3.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
+                mLoading3.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -819,7 +749,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLogo3.setImageResource(logoID);
     }
 
-    public void clickMeClickLogo3 (View view){
+    public void clicksOnThirdRestaurantLogo(View view){
         String url = yelpBusinessPage(mRestaurants3.get(i));
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
@@ -843,40 +773,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void goClick (View view){
+        float []endResult={0.0f,0.0f,0.0f};
         String title = "Food Decision App";
         Double EndLatitude=0.0, EndLongitude=0.0;
         Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
         Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
         EndLatitude=mRestaurants3.get(i).getLatitude();
         EndLongitude=mRestaurants3.get(i).getLongitude();
-        Double distance = distance(StartLatitude,StartLongitude,EndLatitude,EndLongitude);
-        distance = distance/0.62137;
-        String subject = "You are "+Double.toString(distance)+"km away from " + mRestaurants3.get(i).getName();
+        //Double distance = distance(StartLatitude,StartLongitude,EndLatitude,EndLongitude);
+        Location.distanceBetween(StartLatitude,StartLongitude,EndLatitude,EndLongitude, endResult);
+        String subject = "You are "+endResult[0]+"m away from " +endResult[1] + " " + endResult[2]+ mRestaurants3.get(i).getName();
 
         NotificationManager notif = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notify = new Notification.Builder(getApplicationContext()).setContentTitle(title).setContentText(subject).setContentTitle(title).setSmallIcon(R.mipmap.ic_launcher).build();
         notify.flags |=Notification.FLAG_AUTO_CANCEL;
         notif.notify(0,notify);
-    }
-    private double distance(double lat1, double lon1, double lat2, double lon2) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return (dist);
-    }
-
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
     }
 
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
@@ -893,6 +804,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         @Override
         protected String doInBackground(String... params) {
+            //GPSTracker gps = new GPSTracker(MainActivity.this);
             retrofit2.Call<SearchResponse> call = mYelpAPI.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams);
             retrofit2.Response<SearchResponse> response = null;
             try {
@@ -978,6 +890,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         protected String doInBackground(String... params) {
             mParams2.put("offset",params[0]);
+            //GPSTracker gps = new GPSTracker(MainActivity.this);
             retrofit2.Call<SearchResponse> call2 = mYelpAPI2.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams2);
             retrofit2.Response<SearchResponse> response2 = null;
             try {
@@ -1063,6 +976,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         protected String doInBackground(String... params) {
             mParams3.put("offset", params[0]);
+            //GPSTracker gps = new GPSTracker(MainActivity.this);
             retrofit2.Call<SearchResponse> call3 = mYelpAPI3.search(yelpLocationUpdate(displayLocation(),displayLocation2()), mParams3);
             retrofit2.Response<SearchResponse> response3 = null;
             try {
@@ -1132,8 +1046,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         }
     }
-
-
-
-
 }
