@@ -155,7 +155,7 @@
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/mainImage"
-                android:onClick="clickForMap"
+                android:onClick="clickForMapForFirstRestaurant"
                 />
 
             <TextView
@@ -208,7 +208,7 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:id="@+id/mainImage2"
-                    android:onClick="clickForMap2"
+                    android:onClick="clickForMapForSecondRestaurant"
                     android:layout_below="@id/mainImage"
                     />
 
@@ -263,7 +263,7 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:id="@+id/mainImage3"
-                    android:onClick="clickForMap3"
+                    android:onClick="clickForMapForThirdRestaurant"
                     android:layout_below="@id/mainImage2"
                     />
 

@@ -6,9 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -16,11 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anupcowkur.wheelmenu.WheelMenu;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,11 +33,8 @@ import com.squareup.picasso.Picasso;
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
-import com.yelp.clientlib.entities.Category;
 import com.yelp.clientlib.entities.SearchResponse;
 import com.yelp.clientlib.entities.options.CoordinateOptions;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -302,9 +290,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (choiceIsMade==true) {
 
             new FetchPictures().execute("0");
-            waitForRestaurant(true);
+            waitForFirstRestaurantData(true);
             //newRestaurant();
-            waitForRestaurant2(true);
+            waitForSecondRestaurantData(true);
 
            // new FetchPictures().execute("5");
 
@@ -314,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             new FetchPictures2().execute(Integer.toString(i));
 
-            waitForRestaurant3(true);
+            waitForThirdRestaurantData(true);
 
             while (new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures().execute("0") && new FetchPictures3().execute(Integer.toString(j)) == new FetchPictures2().execute(Integer.toString(i))) {
                 Log.v("repeat", "hi");
@@ -454,24 +442,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         displayLocation();
     }
 
-    synchronized public void waitForRestaurant(boolean client){
+    synchronized public void waitForFirstRestaurantData(boolean client){
         if (client) {
             if (mRestaurants.size()>i){
                 //have the data
-                Log.v("have the data", "have the data");
-                restaurantCallback();
+                firstRestaurantCallback();
             }
             else {
                 waiting = true;
-                Log.v("no data1", "no data1");
                 mLoading.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
                 mLoading.setVisibility(View.VISIBLE);
             }
         }
         else {
             if (waiting){
-                Log.v("debug", "hurry");
-                restaurantCallback();
+                firstRestaurantCallback();
                 waiting = false;
                 mLoading.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
                 mLoading.setVisibility(View.INVISIBLE);
@@ -479,10 +464,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void restaurantCallback() {displayRestaurant(mRestaurants.get(i));
+    private void firstRestaurantCallback() {
+        displayFirstRestaurant(mRestaurants.get(i));
     }
 
-    private void displayRestaurant(Restaurantdb r) {
+    private void displayFirstRestaurant(Restaurantdb r) {
         Picasso
                 .with (this)
                 .load(r.getPicUrl())
@@ -554,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    public void clickForMap(View view){
+    public void clickForMapForFirstRestaurant(View view){
 
         Double EndLatitude=0.0, EndLongitude=0.0;
         Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
@@ -568,11 +554,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(chooser);
     }
 
-    synchronized public void waitForRestaurant2(boolean client2){
+    synchronized public void waitForSecondRestaurantData(boolean client2){
         if (client2) {
 
             if (mRestaurants2.size()>i){ // have the data
-                restaurantCallback2();
+                secondRestaurantCallback();
             }
             else {
                 waiting = true;
@@ -582,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         else {
             if (!waiting){
-                restaurantCallback2();
+                secondRestaurantCallback();
                 waiting = false;
                 mLoading2.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
                 mLoading2.setVisibility(View.INVISIBLE);
@@ -590,11 +576,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void restaurantCallback2() {
-        displayRestaurant2(mRestaurants2.get(i));
+    private void secondRestaurantCallback() {
+        displaySecondRestaurant(mRestaurants2.get(i));
     }
 
-    private void displayRestaurant2(Restaurantdb r2) {
+    private void displaySecondRestaurant (Restaurantdb r2) {
         Picasso
                 .with(this)
                 .load(r2.getPicUrl())
@@ -656,7 +642,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
-    public void clickForMap2 (View view){
+    public void clickForMapForSecondRestaurant(View view){
 
         Double EndLatitude=0.0, EndLongitude=0.0;
         Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
@@ -670,11 +656,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(chooser);
     }
 
-    synchronized public void waitForRestaurant3(boolean client3){
+    synchronized public void waitForThirdRestaurantData(boolean client3){
         if (client3) {
             if (mRestaurants3.size()>i){
                 //have the data
-                restaurantCallback3();
+                thirdRestaurantCallback();
             }
             else {
                 waiting = true;
@@ -683,20 +669,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
         else {
-
             if (!waiting){
-                restaurantCallback3();
+                thirdRestaurantCallback();
                 waiting = false;
                 mLoading3.getIndeterminateDrawable().setColorFilter(0xffffff00, android.graphics.PorterDuff.Mode.MULTIPLY);
                 mLoading3.setVisibility(View.INVISIBLE);
             }
         }
     }
-    private void restaurantCallback3() {
-        displayRestaurant3(mRestaurants3.get(i));
+    private void thirdRestaurantCallback() {
+        displayThirdRestaurant(mRestaurants3.get(i));
     }
 
-    private void displayRestaurant3(Restaurantdb r3) {
+    private void displayThirdRestaurant(Restaurantdb r3) {
         Log.v("appear", "appear");
         Picasso
                 .with(this)
@@ -758,8 +743,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
-    public void clickForMap3 (View view){
-
+    public void clickForMapForThirdRestaurant(View view){
         Double EndLatitude=0.0, EndLongitude=0.0;
         Double StartLatitude=yelpLocationUpdate(displayLocation(),displayLocation2()).latitude();
         Double StartLongitude=yelpLocationUpdate(displayLocation(),displayLocation2()).longitude();
@@ -793,13 +777,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     class FetchPictures extends AsyncTask<String, Restaurantdb,String> {
 
         List<Restaurantdb> restaurants=null;
-
         @Override
         protected void onProgressUpdate(Restaurantdb...values){
             super.onProgressUpdate(values);
             mRestaurants.add(values[0]);
-            //Log.v("mRest", Integer.toString(mRestaurants.size()));
-            waitForRestaurant(false);
+            waitForFirstRestaurantData(false);
         }
 
         @Override
@@ -814,7 +796,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             if (response != null) {
-                Log.v("Businesses", response.body().businesses().toString());
                 restaurants = new ArrayList<>();
                 List<Business> businessList = response.body().businesses();
                 Restaurantdb r;
@@ -851,7 +832,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         i++;
                     }
                 }
-                //Log.v("rest", Integer.toString(restaurants.size()));
             }
             return null;
         }
@@ -884,7 +864,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         protected void onProgressUpdate(Restaurantdb...values2){
             super.onProgressUpdate(values2);
             mRestaurants2.add(values2[0]);
-            waitForRestaurant2(false);
+            waitForSecondRestaurantData(false);
         }
 
         @Override
@@ -900,13 +880,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             if (response2 != null) {
-                Log.v("Businesses", response2.body().businesses().toString());
                 restaurants2 = new ArrayList<>();
                 List<Business> businessList2 = response2.body().businesses();
                 Restaurantdb r2;
                 int i=0;
                 for (Business b2 : businessList2) {
-                    Log.v("Businesses", response2.body().businesses().toString());
                     if (b2.isClosed()==false){
                         r2 = new Restaurantdb("   Restaurant Name: " + b2.name() + "----(Open Now)", b2.url());
                         r2.setRating(b2.rating().toString());
@@ -970,7 +948,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         protected void onProgressUpdate(Restaurantdb... values3) {
             super.onProgressUpdate(values3);
             mRestaurants3.add(values3[0]);
-            waitForRestaurant3(false);
+            waitForThirdRestaurantData(false);
         }
 
         @Override
@@ -986,13 +964,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
 
             if (response3 != null) {
-                Log.v("Businesses", response3.body().businesses().toString());
                 restaurants3 = new ArrayList<>();
                 List<Business> businessList3 = response3.body().businesses();
                 Restaurantdb r3;
                 int i = 0;
                 for (Business b3 : businessList3) {
-                    Log.v("Businesses", response3.body().businesses().toString());
                     if (b3.isClosed()==false){
                         r3 = new Restaurantdb("   Restaurant Name: " + b3.name() + "----(Open Now)", b3.url());
                         r3.setRating(b3.rating().toString());
