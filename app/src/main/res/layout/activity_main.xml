@@ -134,7 +134,7 @@
                 android:layout_marginLeft="116dp"
                 android:layout_marginStart="116dp"
                 android:layout_marginTop="20dp"
-                android:onClick="clickMeClick"
+                android:onClick="clickToGenerateFood"
                 android:id="@+id/pressMe"
                 android:textColorLink="#ffffff" />
 
