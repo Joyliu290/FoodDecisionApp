@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int i,j;
     ProgressBar mLoading, mLoading2, mLoading3;
     boolean waiting = false;
-    private WheelMenu wheelMenu;
     private TextView selectedPositionText;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 7171;
@@ -70,8 +69,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static int UPDATE_INTERVAL = 5000;
     private static int FASTEST_INTERVAL = 3000;
     private static int DISPLACEMENT = 10;
-    int pageNum=40;
-    boolean choiceIsMade = false;
+
+    String yelpAPIKey = "G2P9FGi2pJmHlbWY6LA5r0W2mF3VofV-k2d9OX_Oc35U9PjyvbcednFV0q-3YrFC0Ys7ei-SzhBFzbg_RfrGqWpl4xaO6rta5r_qCgKy-o5f13vvTMtPyLdnFz1yWHYx";
+    String yelpClientID = "4ANxrUwjJYj7-_Na0NbHsA";
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -98,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onStop();
     }
 
-    YelpAPIFactory mApiFactory, mApiFactory2, mApiFactory3;
-    YelpAPI mYelpAPI, mYelpAPI2, mYelpAPI3;
-    Map<String, String> mParams, mParams2, mParams3;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -127,16 +123,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLogo3 = (ImageView)findViewById(R.id.logo3);
 
         selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-
-        mApiFactory = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
-        mYelpAPI = mApiFactory.createAPI();
-        mApiFactory2 = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
-        mYelpAPI2 = mApiFactory2.createAPI();
-        mApiFactory3 = new YelpAPIFactory(getString(R.string.consumerKey), getString(R.string.consumerSecret), getString(R.string.token), getString(R.string.tokenSecret));
-        mYelpAPI3 = mApiFactory3.createAPI();
-        mParams = new HashMap<>();
-        mParams2 = new HashMap<>();
-        mParams3 = new HashMap<>();
         mClient = new OkHttpClient();
         mClient2 = new OkHttpClient();
         mClient3 = new OkHttpClient();
