@@ -8,19 +8,28 @@ import org.json.JSONObject;
 
 public class RestaurantInformation implements BusinessInformation {
 
+    @Override
     public String businessImageURL(JSONObject businessJSON) {
         return null;
     }
-    public String businessName(JSONObject businessJSON){
+
+    @Override
+    public String businessName(JSONObject businessJSON) {
         return null;
     }
-    public String businessRating(JSONObject businessJSON){
+
+    @Override
+    public String businessRating(JSONObject businessJSON) {
         return null;
     }
-    public String businessLocation(JSONObject businessJSON){
+
+    @Override
+    public String businessLocation(JSONObject businessJSON) {
         return null;
     }
-    public String businessPriceRange(JSONObject businessJSON){
+
+    @Override
+    public String businessPriceRange(JSONObject businessJSON) {
         return null;
     }
 }
