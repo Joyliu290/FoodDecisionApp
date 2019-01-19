@@ -8,8 +8,8 @@ import android.widget.TextView;
  */
 
 public interface BusinessInfoForUIElements {
-    void businessRatingUI (String businessRating, ImageView businessRatingImage);
-    void businessNameUI (String businessName, TextView businessNameTextview);
-    void businessLocationUI(String businessLocation, TextView businessLocationTextview);
-    void businessImageUI (String businessImage, ImageView businessImageview);
+    void setBusinessRatingUI (String businessRating);
+    void setBusinessNameUI (String businessName);
+    void setBusinessLocationUI(String businessLocation);
+    void setBusinessImageUI (String businessImage);
 }

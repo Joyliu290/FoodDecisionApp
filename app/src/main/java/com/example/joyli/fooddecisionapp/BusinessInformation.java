@@ -8,9 +8,9 @@ import org.json.JSONObject;
  */
 
 public interface BusinessInformation {
-    String businessImageURL(JSONObject businessJSON);
-    String businessName(JSONObject businessJSON);
-    String businessRating(JSONObject businessJSON);
-    String businessLocation(JSONObject businessJSON);
-    String businessPriceRange(JSONObject businessJSON);
+    String getBusinessImageURL();
+    String getBusinessName();
+    String getBusinessRating();
+    String getBusinessLocation();
+    String getBusinessPriceRange();
 }
