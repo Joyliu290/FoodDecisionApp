@@ -2,13 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.example.joyli.fooddecisionapp"
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,18 +30,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile files('libs/stanford-android-lib.jar')
-    compile files('libs/wheel-menu-library.jar')
-    testCompile 'junit:junit:4.12'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.yelp.clientlib:yelp-android:2.0.0'
-    compile 'org.jsoup:jsoup:1.10.1'
-    compile 'com.google.android.gms:play-services:10.2.4'
+    implementation 'com.android.support:appcompat-v7:25.1.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.yelp.clientlib:yelp-android:2.0.0'
+    implementation 'com.google.android.gms:play-services:10.2.4'
+    annotationProcessor 'com.google.auto.value:auto-value:1.1'
 }
 
 apply plugin:'com.android.application'

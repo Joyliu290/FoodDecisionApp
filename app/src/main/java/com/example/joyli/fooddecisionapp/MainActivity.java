@@ -22,25 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anupcowkur.wheelmenu.WheelMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.squareup.picasso.Picasso;
-import com.yelp.clientlib.connection.YelpAPI;
-import com.yelp.clientlib.connection.YelpAPIFactory;
-import com.yelp.clientlib.entities.Business;
-import com.yelp.clientlib.entities.SearchResponse;
-import com.yelp.clientlib.entities.options.CoordinateOptions;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import okhttp3.*;
