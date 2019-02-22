@@ -7,5 +7,5 @@ import org.json.JSONArray;
  */
 
 public interface YelpBusinessSearch {
-    JSONArray getBusinessInfoBasedOnCategoryAndLocationJSON ();
+    void getBusinessesInfo();
 }

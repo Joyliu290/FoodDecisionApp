@@ -39,13 +39,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     TextView mRestaurantTitle, mRestaurantTitle2, mRestaurantTitle3, mLocation,mLocation2,mLocation3, mReview, mReview2, mReview3;
     ImageView mMainImage,mMainImage2, mMainImage3, mRate, mLogo, mRate2, mRate3, mLogo3, mLogo2;
-    OkHttpClient mClient, mClient2, mClient3;
     private ArrayList<Restaurantdb> mRestaurants= new ArrayList<>();
     private List<Restaurantdb> mRestaurants2 = new ArrayList<>();
     private List<Restaurantdb> mRestaurants3 = new ArrayList<>();
     int i,j;
     ProgressBar mLoading, mLoading2, mLoading3;
-    boolean waiting = false;
     private TextView selectedPositionText;
 
     private static final int MY_PERMISSION_REQUEST_CODE = 7171;
@@ -58,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static int UPDATE_INTERVAL = 5000;
     private static int FASTEST_INTERVAL = 3000;
     private static int DISPLACEMENT = 10;
-
-    String yelpAPIKey = "G2P9FGi2pJmHlbWY6LA5r0W2mF3VofV-k2d9OX_Oc35U9PjyvbcednFV0q-3YrFC0Ys7ei-SzhBFzbg_RfrGqWpl4xaO6rta5r_qCgKy-o5f13vvTMtPyLdnFz1yWHYx";
-    String yelpClientID = "4ANxrUwjJYj7-_Na0NbHsA";
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -112,9 +107,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLogo3 = (ImageView)findViewById(R.id.logo3);
 
         selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-        mClient = new OkHttpClient();
-        mClient2 = new OkHttpClient();
-        mClient3 = new OkHttpClient();
         mRestaurants = new ArrayList<>();
         mRestaurants2 = new ArrayList<>();
         mRestaurants3 = new ArrayList<>();
@@ -137,41 +129,65 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 createLocationRequest();
             }
         }
+
+        Button pressForFoodButton = (Button)findViewById(R.id.pressMe);
+        pressForFoodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double currentLatitude = 43.653225;
+                double currentLongitude = -79.383186;
+                String category = clickToGenerateFood();
+                RestaurantCategorySearch searchBusinessesBasedOnCategory = new RestaurantCategorySearch(getApplicationContext(), category, currentLatitude, currentLongitude);
+                searchBusinessesBasedOnCategory.getBusinessesInfo();
+            }
+        });
     }
 
-  public void clickToGenerateFood(View view) {
+  public String clickToGenerateFood() {
         i=0;
         j=0;
         Random r = new Random();
         int randomNum=r.nextInt(12-1)+1;
-        chooseAFoodCategory(randomNum);
+        return chooseAFoodCategory(randomNum);
   }
 
-  private void chooseAFoodCategory(int randomNum){
+  private String chooseAFoodCategory(int randomNum){
       if (randomNum == 1) {
           selectedPositionText.setText("Selected: Korean Food");
+          return "korean";
       } else if (randomNum == 2) {
           selectedPositionText.setText("Selected: Japanese Food");
+          return "japanese";
       } else if (randomNum == 3) {
           selectedPositionText.setText("Selected: Indian Food");
+          return "indian";
       } else if (randomNum == 4) {
           selectedPositionText.setText("Selected: Chinese Food");
+          return "chinese";
       } else if (randomNum == 5) {
           selectedPositionText.setText("Selected: Italian Food");
+          return "italian";
       } else if (randomNum == 6) {
           selectedPositionText.setText("Selected: Thai Food");
+          return "thai";
       } else if (randomNum == 7) {
           selectedPositionText.setText("Selected: Vietnamese Food");
+          return "vietnamese";
       } else if (randomNum == 8) {
           selectedPositionText.setText("Selected: Fast Food");
+          return "fast_food";
       } else if (randomNum == 9) {
           selectedPositionText.setText("Selected: Cafe");
+          return "cafe";
       } else if (randomNum == 10) {
           selectedPositionText.setText("Selected: Buffet");
+          return "buffet";
       } else if (randomNum == 11) {
           selectedPositionText.setText("Selected: Dessert");
+          return "dessert";
       } else {
           selectedPositionText.setText("Selected: Greek Food");
+          return  "greek";
       }
   }
 
