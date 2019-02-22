@@ -7,18 +7,19 @@ import org.json.JSONArray;
  */
 
 public class RestaurantCategorySearch implements YelpBusinessSearch {
-    private String categroy;
+    private String category;
     private float latitude;
     private float longitude;
 
-    RestaurantCategorySearch(String categroy, float latitude, float longitude){
-        this.categroy = categroy;
+    RestaurantCategorySearch(String category, float latitude, float longitude){
+        this.category = category;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     @Override
     public JSONArray getBusinessInfoBasedOnCategoryAndLocationJSON() {
+
         return null;
     }
 }
