@@ -34,7 +34,7 @@ public class RestaurantCategorySearch implements YelpBusinessSearch {
     }
 
     @Override
-    public void getBusinessesInfo() {
+    public JSONObject getBusinessesInfo() {
         String apiKey = this.context.getString(R.string.yelp_api_key);
         // Creating GET request objects to make network calls to Yelp API to retrieve list of businesses under the category
         OkHttpClient client = new OkHttpClient();
@@ -50,27 +50,36 @@ public class RestaurantCategorySearch implements YelpBusinessSearch {
                 .url(getUrl)
                 .build();
         // Sending and receiving network calls
-        client.newCall(getRequest).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()){
-                    throw new IOException("GET REQUEST FAILED" + response);
-                }
-                else{
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body().string());
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        try {
+            Response response = client.newCall(getRequest).execute();
+            return new JSONObject(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+//        client.newCall(getRequest).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (!response.isSuccessful()){
+//                    throw new IOException("GET REQUEST FAILED" + response);
+//                }
+//                else{
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(response.body().string());
+//
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
     }
 }

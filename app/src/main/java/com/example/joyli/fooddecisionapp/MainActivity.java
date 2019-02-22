@@ -28,6 +28,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -138,7 +141,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 double currentLongitude = -79.383186;
                 String category = clickToGenerateFood();
                 RestaurantCategorySearch searchBusinessesBasedOnCategory = new RestaurantCategorySearch(getApplicationContext(), category, currentLatitude, currentLongitude);
-                searchBusinessesBasedOnCategory.getBusinessesInfo();
+                JSONObject jsonObject = searchBusinessesBasedOnCategory.getBusinessesInfo();
+
+                RestaurantInformation restaurantInformation1 = new RestaurantInformation(jsonObject);
+                restaurantInformation1.getBusinessImageURL();
             }
         });
     }
