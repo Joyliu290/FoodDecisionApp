@@ -22,14 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ViewList"
-            android:label="Food Decision App">
-            <intent-filter>
-                <action android:name="com.example.joyli.fooddecisionapp.ViewList" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

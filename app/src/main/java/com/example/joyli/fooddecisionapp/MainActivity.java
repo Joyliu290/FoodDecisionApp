@@ -29,8 +29,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     TextView mRestaurantTitle, mRestaurantTitle2, mRestaurantTitle3, mLocation,mLocation2,mLocation3, mReview, mReview2, mReview3;
     ImageView mMainImage,mMainImage2, mMainImage3, mRate, mLogo, mRate2, mRate3, mLogo3, mLogo2;
-    private ArrayList<Restaurantdb> mRestaurants= new ArrayList<>();
-    private List<Restaurantdb> mRestaurants2 = new ArrayList<>();
-    private List<Restaurantdb> mRestaurants3 = new ArrayList<>();
     int i,j;
     ProgressBar mLoading, mLoading2, mLoading3;
     private TextView selectedPositionText;
@@ -110,9 +110,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLogo3 = (ImageView)findViewById(R.id.logo3);
 
         selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-        mRestaurants = new ArrayList<>();
-        mRestaurants2 = new ArrayList<>();
-        mRestaurants3 = new ArrayList<>();
         mLoading = (ProgressBar) findViewById(R.id.progressBar2);
         mLoading2 = (ProgressBar) findViewById(R.id.progressBar3);
         mLoading3 = (ProgressBar) findViewById(R.id.progressBar4);
@@ -140,13 +137,79 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 double currentLatitude = 43.653225;
                 double currentLongitude = -79.383186;
                 String category = clickToGenerateFood();
-                RestaurantCategorySearch searchBusinessesBasedOnCategory = new RestaurantCategorySearch(getApplicationContext(), category, currentLatitude, currentLongitude);
-                JSONObject jsonObject = searchBusinessesBasedOnCategory.getBusinessesInfo();
-
-                RestaurantInformation restaurantInformation1 = new RestaurantInformation(jsonObject);
-                restaurantInformation1.getBusinessImageURL();
+                getListOfRestaurants(currentLatitude, currentLongitude, category);
             }
         });
+    }
+
+    public void getListOfRestaurants(double latitude, double longitude, String category){
+        String apiKey = getApplicationContext().getString(R.string.yelp_api_key);
+        // Creating GET request objects to make network calls to Yelp API to retrieve list of businesses under the category
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder getRequestBuilder =
+                HttpUrl.parse("https://api.yelp.com/v3/businesses/search").newBuilder();
+        getRequestBuilder.addQueryParameter("latitude", Double.toString(latitude));
+        getRequestBuilder.addQueryParameter("longitude", Double.toString(longitude));
+        getRequestBuilder.addQueryParameter("categories", category);
+        String getUrl = getRequestBuilder.build().toString();
+
+        Request getRequest = new Request.Builder()
+                .header("Authorization", "Bearer "+apiKey)
+                .url(getUrl)
+                .build();
+        // Sending and receiving network calls
+        client.newCall(getRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()){
+                    throw new IOException("GET REQUEST FAILED" + response);
+                }
+                else{
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        setRestaurantData(jsonObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void setRestaurantData(JSONObject restaurantJson){
+        try {
+            JSONArray businessesJsonArray = restaurantJson.getJSONArray("businesses");
+            final Restaurant restaurant1 = new Restaurant(businessesJsonArray.getJSONObject(0), getApplicationContext(), mRate, mRestaurantTitle, mLocation, mMainImage);
+            final Restaurant restaurant2 = new Restaurant(businessesJsonArray.getJSONObject(1), getApplicationContext(), mRate2, mRestaurantTitle2, mLocation2, mMainImage2);
+            final Restaurant restaurant3 = new Restaurant(businessesJsonArray.getJSONObject(2), getApplicationContext(), mRate3, mRestaurantTitle3, mLocation3, mMainImage3);
+
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    restaurant1.setBusinessImageUI();
+                    restaurant1.setBusinessLocationUI();
+                    restaurant1.setBusinessNameUI();
+                    restaurant1.setBusinessRatingUI();
+
+                    restaurant2.setBusinessRatingUI();
+                    restaurant2.setBusinessNameUI();
+                    restaurant2.setBusinessLocationUI();
+                    restaurant2.setBusinessImageUI();
+
+                    restaurant3.setBusinessImageUI();
+                    restaurant3.setBusinessLocationUI();
+                    restaurant3.setBusinessRatingUI();
+                    restaurant3.setBusinessNameUI();
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
   public String clickToGenerateFood() {
@@ -299,91 +362,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLastLocation = location;
         displayCurrentLatitudeLocationOfDevice();
     }
-
-    public String yelpBusinessPage(Restaurantdb r)
-    {
-        String url;
-        url=r.getUrl();
-        return url;
-    }
-
-    public void clickOnFirstRestaurantLogo(View view){
-        String url=yelpBusinessPage(mRestaurants.get(i));
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
-
-    public void clickForMapForFirstRestaurant(View view){
-        Double EndLatitude=0.0, EndLongitude=0.0;
-        EndLatitude=mRestaurants.get(i).getLatitude();
-        EndLongitude=mRestaurants.get(i).getLongitude();
-        Intent intent =null, chooser=null;
-        intent = new Intent (Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(displayCurrentLatitudeLocationOfDevice())+ ","
-                + Double.toString(displayCurrentLongitudeLocationOfDevice()) + "&daddr=" + Double.toString(EndLatitude) + "," + Double.toString(EndLongitude)));
-        chooser=Intent.createChooser(intent,"Launch Maps");
-        startActivity(chooser);
-    }
-
-    public void clickOnSecondRestaurantLogo(View view){
-        String url = yelpBusinessPage(mRestaurants2.get(i));
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
-
-    public void clickForMapForSecondRestaurant(View view){
-        Double EndLatitude=0.0, EndLongitude=0.0;
-        EndLatitude=mRestaurants2.get(i).getLatitude();
-        EndLongitude=mRestaurants2.get(i).getLongitude();
-        Intent intent =null, chooser=null;
-        intent = new Intent (Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(displayCurrentLatitudeLocationOfDevice())+","
-                + Double.toString(displayCurrentLongitudeLocationOfDevice())+"&daddr="+Double.toString(EndLatitude)+","+Double.toString(EndLongitude)));
-        chooser=Intent.createChooser(intent,"Launch Maps");
-        startActivity(chooser);
-    }
-
-    public void clicksOnThirdRestaurantLogo(View view){
-        String url = yelpBusinessPage(mRestaurants3.get(i));
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
-
-    public void clickForMapForThirdRestaurant(View view){
-        Double EndLatitude=0.0, EndLongitude=0.0;
-        EndLatitude=mRestaurants3.get(i).getLatitude();
-        EndLongitude=mRestaurants3.get(i).getLongitude();
-        Intent intent =null, chooser=null;
-        intent = new Intent (Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://maps.google.com/maps?+saddr="+Double.toString(displayCurrentLatitudeLocationOfDevice())+","
-                + Double.toString(displayCurrentLongitudeLocationOfDevice())+"&daddr="+Double.toString(EndLatitude)+","+Double.toString(EndLongitude)));
-        chooser=Intent.createChooser(intent,"Launch Maps");
-        startActivity(chooser);
-    }
-
-    public void goClick (View view){
-        float []endResult={0.0f,0.0f,0.0f};
-        String title = "Food Decision App";
-        Double EndLatitude=0.0, EndLongitude=0.0;
-        EndLatitude=mRestaurants3.get(i).getLatitude();
-        EndLongitude=mRestaurants3.get(i).getLongitude();
-        //Double distance = distance(StartLatitude,StartLongitude,EndLatitude,EndLongitude);
-        Location.distanceBetween(displayCurrentLatitudeLocationOfDevice(),displayCurrentLongitudeLocationOfDevice(),EndLatitude,EndLongitude, endResult);
-        String subject = "You are "+endResult[0]+"m away from " +endResult[1] + " " + endResult[2]+ mRestaurants3.get(i).getName();
-
-        NotificationManager notif = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notify = new Notification.Builder(getApplicationContext()).setContentTitle(title).setContentText(subject).setContentTitle(title).setSmallIcon(R.mipmap.ic_launcher).build();
-        notify.flags |=Notification.FLAG_AUTO_CANCEL;
-        notif.notify(0,notify);
-    }
-
 }
