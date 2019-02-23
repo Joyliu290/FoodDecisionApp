@@ -139,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 mLoading2.setVisibility(View.VISIBLE);
                 mLoading3.setVisibility(View.VISIBLE);
                 // ideally, get the device's current latitude and longitude, right now just static
-                double currentLatitude = 43.653225;
-                double currentLongitude = -79.383186;
+                double currentLatitude = displayCurrentLatitudeLocationOfDevice();
+                double currentLongitude = displayCurrentLongitudeLocationOfDevice();
                 String category = clickToGenerateFood();
                 // call Yelp API and then load the UI
                 getListOfRestaurants(currentLatitude, currentLongitude, category);
