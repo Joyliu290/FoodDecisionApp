@@ -11,26 +11,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85b7f9cc-ba67-4f10-a980-f0319e266dd4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/IBusiness.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/BusinessInfoForUIElements.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/BusinessInformation.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/RestaurantCategorySearch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/RestaurantInformation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/RestaurantUIElements.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurantdb.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/TwoColumn_ListAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/ViewList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/YelpBusinessSearch.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_array_list_columns.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <ignored path="Food Decision App.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,32 +58,32 @@
         <counts>
           <entry key="gitignore" value="1" />
           <entry key="gradle" value="2" />
-          <entry key="java" value="11" />
-          <entry key="xml" value="2" />
+          <entry key="java" value="12" />
+          <entry key="xml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Groovy" value="2" />
-          <entry key="JAVA" value="11" />
+          <entry key="JAVA" value="12" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="2" />
+          <entry key="XML" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gitignore" value="19" />
           <entry key="gradle" value="143" />
-          <entry key="java" value="3314" />
-          <entry key="xml" value="15" />
+          <entry key="java" value="4014" />
+          <entry key="xml" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="143" />
-          <entry key="JAVA" value="3314" />
+          <entry key="JAVA" value="4014" />
           <entry key="PLAIN_TEXT" value="19" />
-          <entry key="XML" value="15" />
+          <entry key="XML" value="35" />
         </counts>
       </usages-collector>
     </session>
@@ -104,22 +93,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1260">
-              <caret line="46" column="96" selection-start-line="46" selection-start-column="96" selection-end-line="46" selection-end-column="96" />
+            <state relative-caret-position="372">
+              <caret line="261" column="57" selection-start-line="261" selection-start-column="57" selection-end-line="261" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3051#3511#0" />
                 <element signature="e#3517#3678#0" />
-                <element signature="e#5658#7741#0" expanded="true" />
-                <element signature="e#7740#7741#0" expanded="true" />
-                <element signature="e#7865#7921#0" expanded="true" />
+                <element signature="e#5276#6770#0" expanded="true" />
+                <element signature="e#6769#6770#0" expanded="true" />
+                <element signature="e#6894#6950#0" expanded="true" />
                 <element signature="e#8759#8760#0" expanded="true" />
                 <element signature="e#8810#8811#0" expanded="true" />
-                <element signature="e#10257#11029#0" expanded="true" />
-                <element signature="e#11028#11029#0" expanded="true" />
+                <element signature="e#9302#10309#0" expanded="true" />
+                <element signature="e#10308#10309#0" expanded="true" />
                 <element signature="e#9551#9905#0" />
                 <element signature="e#9911#10169#0" />
                 <element signature="e#10175#10780#0" />
@@ -143,13 +132,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2159">
+            <state relative-caret-position="1836">
               <caret line="127" selection-start-line="127" selection-end-line="127" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5200#5201#0" expanded="true" />
                 <element signature="e#5263#5264#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="101" column="46" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -2470,7 +2469,6 @@
         <option value="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values-ldltr-v21/values-ldltr-v21.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurantdb.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/GPSTracker.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/BusinessInfoForUIElements.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/RestaurantUIElements.java" />
@@ -2485,6 +2483,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurant.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/RestaurantCategorySearch.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
       </list>
     </option>
   </component>
@@ -2869,7 +2868,7 @@
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49389312" weight="0.31911263" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50610685" side_tool="true" weight="0.318569" />
       <window_info anchor="bottom" id="Android Monitor" order="9" sideWeight="0.49394855" weight="0.75938565" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32935154" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32879046" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32879046" />
       <window_info anchor="bottom" id="Gradle Console" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="13" weight="0.32367972" />
@@ -3122,14 +3121,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="2210">
-          <caret line="338" column="58" selection-start-line="338" selection-start-column="58" selection-end-line="338" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/BusinessInfoForUIElements.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -3173,6 +3164,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/extras/android/m2repository/com/android/support/appcompat-v7/25.1.0/appcompat-v7-25.1.0-sources.jar!/android/support/v7/app/AppCompatActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="182" column="4" selection-start-line="182" selection-start-column="4" selection-end-line="182" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/IBusiness.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -3182,7 +3180,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/Restaurant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2159">
+        <state relative-caret-position="1836">
           <caret line="127" selection-start-line="127" selection-end-line="127" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -3194,19 +3192,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/joyli/fooddecisionapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1260">
-          <caret line="46" column="96" selection-start-line="46" selection-start-column="96" selection-end-line="46" selection-end-column="96" />
+        <state relative-caret-position="372">
+          <caret line="261" column="57" selection-start-line="261" selection-start-column="57" selection-end-line="261" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3051#3511#0" />
             <element signature="e#3517#3678#0" />
-            <element signature="e#5658#7741#0" expanded="true" />
-            <element signature="e#7740#7741#0" expanded="true" />
-            <element signature="e#7865#7921#0" expanded="true" />
+            <element signature="e#5276#6770#0" expanded="true" />
+            <element signature="e#6769#6770#0" expanded="true" />
+            <element signature="e#6894#6950#0" expanded="true" />
             <element signature="e#8759#8760#0" expanded="true" />
             <element signature="e#8810#8811#0" expanded="true" />
-            <element signature="e#10257#11029#0" expanded="true" />
-            <element signature="e#11028#11029#0" expanded="true" />
+            <element signature="e#9302#10309#0" expanded="true" />
+            <element signature="e#10308#10309#0" expanded="true" />
             <element signature="e#9551#9905#0" />
             <element signature="e#9911#10169#0" />
             <element signature="e#10175#10780#0" />
@@ -3214,6 +3212,14 @@
             <element signature="e#11435#11534#0" />
             <element signature="e#11540#11637#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="101" column="46" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
         </state>
       </provider>
     </entry>

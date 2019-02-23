@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -134,9 +132,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         pressForFoodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // make current restaurant data invisible
+                clearAllRestaurantUI();
+                // make the progress bar visibile
+                mLoading.setVisibility(View.VISIBLE);
+                mLoading2.setVisibility(View.VISIBLE);
+                mLoading3.setVisibility(View.VISIBLE);
+                // ideally, get the device's current latitude and longitude, right now just static
                 double currentLatitude = 43.653225;
                 double currentLongitude = -79.383186;
                 String category = clickToGenerateFood();
+                // call Yelp API and then load the UI
                 getListOfRestaurants(currentLatitude, currentLongitude, category);
             }
         });
@@ -190,6 +196,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // set progress bar to be invisible
+                    mLoading.setVisibility(View.INVISIBLE);
+                    mLoading2.setVisibility(View.INVISIBLE);
+                    mLoading3.setVisibility(View.INVISIBLE);
                     restaurant1.setBusinessImageUI();
                     restaurant1.setBusinessLocationUI();
                     restaurant1.setBusinessNameUI();
@@ -243,14 +253,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
           selectedPositionText.setText("Selected: Vietnamese Food");
           return "vietnamese";
       } else if (randomNum == 8) {
-          selectedPositionText.setText("Selected: Fast Food");
-          return "fast_food";
+          selectedPositionText.setText("Selected: Mexican");
+          return "mexican";
       } else if (randomNum == 9) {
           selectedPositionText.setText("Selected: Cafe");
           return "cafe";
       } else if (randomNum == 10) {
-          selectedPositionText.setText("Selected: Buffet");
-          return "buffet";
+          selectedPositionText.setText("Selected: Noodles");
+          return "noodles";
       } else if (randomNum == 11) {
           selectedPositionText.setText("Selected: Dessert");
           return "dessert";
@@ -360,6 +370,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+
         displayCurrentLatitudeLocationOfDevice();
     }
+
+    public void clearAllRestaurantUI(){
+        mRate.setImageResource(android.R.color.transparent);
+        mRate2.setImageResource(android.R.color.transparent);
+        mRate3.setImageResource(android.R.color.transparent);
+        mMainImage.setImageResource(android.R.color.transparent);
+        mMainImage2.setImageResource(android.R.color.transparent);
+        mMainImage3.setImageResource(android.R.color.transparent);
+        mRestaurantTitle.setText("");
+        mRestaurantTitle2.setText("");
+        mRestaurantTitle3.setText("");
+        mLocation.setText("");
+        mLocation2.setText("");
+        mLocation3.setText("");
+    }
 }
+

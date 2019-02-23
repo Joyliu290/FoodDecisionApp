@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
-                android:text = "#8 -> Fast Food"
+                android:text = "#8 -> Mexcian Food"
                 android:textSize="12sp" />
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity = "left"
                 android:layout_marginTop="10dp"
-                android:text = "#10 -> Buffet"
+                android:text = "#10 -> Noodles"
                 android:textSize="12sp" />
 
             <TextView
