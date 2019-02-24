@@ -244,6 +244,7 @@
                     android:text=""
                     android:layout_below="@+id/rating2"
                     android:layout_toRightOf="@+id/mainImage2"
+                    android:layout_alignLeft="@+id/rating2"
                     android:textSize="12sp"
                     android:id="@+id/reviews2"/>
 

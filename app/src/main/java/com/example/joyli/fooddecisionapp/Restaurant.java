@@ -15,23 +15,28 @@ public class Restaurant implements IBusiness {
     private String restaurantName;
     private String restaurantRate;
     private String restaurantLocation;
+    private String restaurantReviewCount;
     private ImageView businessRatingImageView;
     private TextView businessNameTextView;
     private TextView businessLocationTextView;
+    private TextView businessReviewCount;
     private ImageView businessImageView;
     private JSONObject restaurantJson;
 
-    Restaurant(JSONObject restaurantJson, Context context, ImageView businessRatingImageView, TextView businessNameTextView, TextView businessLocationTextView, ImageView businessImageView){
+    Restaurant(JSONObject restaurantJson, Context context, ImageView businessRatingImageView, TextView businessNameTextView, TextView businessLocationTextView, TextView businessReviewCount, ImageView businessImageView){
         this.restaurantJson = restaurantJson;
         this.context = context;
         this.businessNameTextView = businessNameTextView;
         this.businessLocationTextView = businessLocationTextView;
         this.businessImageView = businessImageView;
         this.businessRatingImageView = businessRatingImageView;
+        this.businessReviewCount = businessReviewCount;
         this.restaurantImageURL = getRestaurantImageURL();
         this.restaurantLocation = getRestaurantLocation();
         this.restaurantName = getRestaurantName();
         this.restaurantRate = getRestaurantRate();
+        this.restaurantReviewCount = getRestaurantReviewCount();
+
     }
 
     private String getRestaurantImageURL() {
@@ -66,6 +71,15 @@ public class Restaurant implements IBusiness {
         try {
             JSONObject locationObject = this.restaurantJson.getJSONObject("location");
             return locationObject.getString("address1") + " " + locationObject.getString("city") + ", " + locationObject.getString("state");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return e.toString();
+        }
+    }
+
+    private String getRestaurantReviewCount() {
+        try {
+            return this.restaurantReviewCount = this.restaurantJson.getString("review_count");
         } catch (JSONException e) {
             e.printStackTrace();
             return e.toString();
@@ -113,7 +127,6 @@ public class Restaurant implements IBusiness {
             int drawableID= this.context.getResources().getIdentifier ("stars_regular_5","drawable", this.context.getPackageName());
             this.businessRatingImageView.setImageResource(drawableID);
         }
-
     }
     public void setBusinessNameUI (){
         this.businessNameTextView.setText(this.restaurantName);
@@ -126,5 +139,9 @@ public class Restaurant implements IBusiness {
                 .with(this.context)
                 .load(this.restaurantImageURL)
                 .into (this.businessImageView);
+    }
+
+    public void setBusinessReviewCountUI(){
+        this.businessReviewCount.setText("                          Based on " + this.restaurantReviewCount+ " reviews");
     }
 }

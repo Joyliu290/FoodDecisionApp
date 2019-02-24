@@ -5,5 +5,6 @@ public interface IBusiness {
     void setBusinessNameUI ();
     void setBusinessLocationUI();
     void setBusinessImageUI ();
+    void setBusinessReviewCountUI();
 }
 

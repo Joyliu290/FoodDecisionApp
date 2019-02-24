@@ -189,9 +189,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void setRestaurantData(JSONObject restaurantJson){
         try {
             JSONArray businessesJsonArray = restaurantJson.getJSONArray("businesses");
-            final Restaurant restaurant1 = new Restaurant(businessesJsonArray.getJSONObject(0), getApplicationContext(), mRate, mRestaurantTitle, mLocation, mMainImage);
-            final Restaurant restaurant2 = new Restaurant(businessesJsonArray.getJSONObject(1), getApplicationContext(), mRate2, mRestaurantTitle2, mLocation2, mMainImage2);
-            final Restaurant restaurant3 = new Restaurant(businessesJsonArray.getJSONObject(2), getApplicationContext(), mRate3, mRestaurantTitle3, mLocation3, mMainImage3);
+            final Restaurant restaurant1 = new Restaurant(businessesJsonArray.getJSONObject(0), getApplicationContext(), mRate, mRestaurantTitle, mLocation, mReview, mMainImage);
+            final Restaurant restaurant2 = new Restaurant(businessesJsonArray.getJSONObject(1), getApplicationContext(), mRate2, mRestaurantTitle2, mLocation2, mReview2, mMainImage2);
+            final Restaurant restaurant3 = new Restaurant(businessesJsonArray.getJSONObject(2), getApplicationContext(), mRate3, mRestaurantTitle3, mLocation3, mReview3, mMainImage3);
 
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
@@ -202,14 +202,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     restaurant1.setBusinessLocationUI();
                     restaurant1.setBusinessNameUI();
                     restaurant1.setBusinessRatingUI();
+                    restaurant1.setBusinessReviewCountUI();
                     restaurant2.setBusinessRatingUI();
                     restaurant2.setBusinessNameUI();
                     restaurant2.setBusinessLocationUI();
                     restaurant2.setBusinessImageUI();
+                    restaurant2.setBusinessReviewCountUI();
                     restaurant3.setBusinessImageUI();
                     restaurant3.setBusinessLocationUI();
                     restaurant3.setBusinessRatingUI();
                     restaurant3.setBusinessNameUI();
+                    restaurant3.setBusinessReviewCountUI();
                 }
             });
 
@@ -380,6 +383,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRestaurantTitle.setText("");
         mRestaurantTitle2.setText("");
         mRestaurantTitle3.setText("");
+        mReview.setText("");
+        mReview2.setText("");
+        mReview3.setText("");
         mLocation.setText("");
         mLocation2.setText("");
         mLocation3.setText("");
