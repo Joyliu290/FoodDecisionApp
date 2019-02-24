@@ -126,7 +126,8 @@
                 android:textSize="12sp" />
 
             <Button
-                android:text="Press to Food"
+                android:text="Choose Food!"
+                android:textAllCaps="false"
                 android:layout_width="146dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -134,10 +135,8 @@
                 android:layout_marginLeft="116dp"
                 android:layout_marginStart="116dp"
                 android:layout_marginTop="20dp"
-                android:onClick="clickToGenerateFood"
                 android:id="@+id/pressMe"
                 android:textColorLink="#ffffff" />
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -155,7 +154,6 @@
                 android:layout_width="125dp"
                 android:layout_height="125dp"
                 android:id="@+id/mainImage"
-                android:onClick="clickForMapForFirstRestaurant"
                 />
 
             <TextView
@@ -197,7 +195,8 @@
 
                 <ImageView
                     android:id="@+id/logo"
-                    android:onClick="clickOnFirstRestaurantLogo"
+                    android:visibility="invisible"
+                    android:src="@drawable/yelp_trademark_rgb_outline"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating"
@@ -208,7 +207,6 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:id="@+id/mainImage2"
-                    android:onClick="clickForMapForSecondRestaurant"
                     android:layout_below="@id/mainImage"
                     />
 
@@ -251,7 +249,8 @@
 
                 <ImageView
                     android:id="@+id/logo2"
-                    android:onClick="clickOnSecondRestaurantLogo"
+                    android:visibility="invisible"
+                    android:src="@drawable/yelp_trademark_rgb_outline"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating2"
@@ -263,7 +262,6 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:id="@+id/mainImage3"
-                    android:onClick="clickForMapForThirdRestaurant"
                     android:layout_below="@id/mainImage2"
                     />
 
@@ -276,7 +274,6 @@
                     android:textSize="12sp"
                     android:layout_toRightOf="@+id/mainImage3"
                     android:layout_below="@+id/mainImage2"
-
                     />
 
                 <ImageView
@@ -307,23 +304,13 @@
 
                 <ImageView
                     android:id="@+id/logo3"
-                    android:onClick="clicksOnThirdRestaurantLogo"
+                    android:src="@drawable/yelp_trademark_rgb_outline"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_below="@+id/rating3"
                     android:layout_marginLeft="150dp"
-                    android:layout_toRightOf="@+id/mainImage3" />
-
-                <Button
-                    android:id="@+id/go"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_below="@+id/reviews3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="25dp"
-                    android:onClick="goClick"
-                    android:text="GO"
-                    android:visibility="invisible" />
+                    android:layout_toRightOf="@+id/mainImage3"
+                    android:visibility="invisible"/>
 
                 <ProgressBar
                     android:id="@+id/progressBar2"
@@ -352,11 +339,7 @@
                     android:layout_below="@+id/foodName3"
                     android:layout_alignStart="@+id/progressBar3" />
 
-
             </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

@@ -197,19 +197,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 @Override
                 public void run() {
                     // set progress bar to be invisible
-                    mLoading.setVisibility(View.INVISIBLE);
-                    mLoading2.setVisibility(View.INVISIBLE);
-                    mLoading3.setVisibility(View.INVISIBLE);
+                    showLogoAndMakeProgressBarInvisible();
                     restaurant1.setBusinessImageUI();
                     restaurant1.setBusinessLocationUI();
                     restaurant1.setBusinessNameUI();
                     restaurant1.setBusinessRatingUI();
-
                     restaurant2.setBusinessRatingUI();
                     restaurant2.setBusinessNameUI();
                     restaurant2.setBusinessLocationUI();
                     restaurant2.setBusinessImageUI();
-
                     restaurant3.setBusinessImageUI();
                     restaurant3.setBusinessLocationUI();
                     restaurant3.setBusinessRatingUI();
@@ -387,6 +383,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocation.setText("");
         mLocation2.setText("");
         mLocation3.setText("");
+    }
+
+    public void showLogoAndMakeProgressBarInvisible(){
+        mLoading.setVisibility(View.INVISIBLE);
+        mLoading2.setVisibility(View.INVISIBLE);
+        mLoading3.setVisibility(View.INVISIBLE);
+        mLogo.setVisibility(View.VISIBLE);
+        mLogo2.setVisibility(View.VISIBLE);
+        mLogo3.setVisibility(View.VISIBLE);
     }
 }
 
