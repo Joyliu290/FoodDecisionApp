@@ -177,7 +177,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 else{
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().string());
-                        setRestaurantData(jsonObject);
+                        JSONArray businessesJsonArray = jsonObject.getJSONArray("businesses");
+                        Restaurant restaurant1 = new Restaurant(businessesJsonArray.getJSONObject(0), getApplicationContext(), mRate, mRestaurantTitle, mLocation, mReview, mMainImage);
+                        Restaurant restaurant2 = new Restaurant(businessesJsonArray.getJSONObject(1), getApplicationContext(), mRate2, mRestaurantTitle2, mLocation2, mReview2, mMainImage2);
+                        Restaurant restaurant3 = new Restaurant(businessesJsonArray.getJSONObject(2), getApplicationContext(), mRate3, mRestaurantTitle3, mLocation3, mReview3, mMainImage3);
+
+                        setRestaurantData(restaurant1, restaurant2, restaurant3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -186,13 +191,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
-    public void setRestaurantData(JSONObject restaurantJson){
-        try {
-            JSONArray businessesJsonArray = restaurantJson.getJSONArray("businesses");
-            final Restaurant restaurant1 = new Restaurant(businessesJsonArray.getJSONObject(0), getApplicationContext(), mRate, mRestaurantTitle, mLocation, mReview, mMainImage);
-            final Restaurant restaurant2 = new Restaurant(businessesJsonArray.getJSONObject(1), getApplicationContext(), mRate2, mRestaurantTitle2, mLocation2, mReview2, mMainImage2);
-            final Restaurant restaurant3 = new Restaurant(businessesJsonArray.getJSONObject(2), getApplicationContext(), mRate3, mRestaurantTitle3, mLocation3, mReview3, mMainImage3);
-
+    public void setRestaurantData(final IBusiness restaurant1, final IBusiness restaurant2, final IBusiness restaurant3){
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -215,10 +214,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     restaurant3.setBusinessReviewCountUI();
                 }
             });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
   public String clickToGenerateFood() {
