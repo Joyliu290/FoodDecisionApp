@@ -36,7 +36,7 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:25.1.0'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.yelp.clientlib:yelp-android:2.0.0'
     implementation 'com.google.android.gms:play-services:10.2.4'
     annotationProcessor 'com.google.auto.value:auto-value:1.1'

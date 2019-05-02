@@ -36,7 +36,6 @@ public class Restaurant implements IBusiness {
         this.restaurantName = getRestaurantName();
         this.restaurantRate = getRestaurantRate();
         this.restaurantReviewCount = getRestaurantReviewCount();
-
     }
 
     private String getRestaurantImageURL() {
@@ -136,7 +135,7 @@ public class Restaurant implements IBusiness {
     }
     public void setBusinessImageUI (){
         Picasso
-                .with(this.context)
+                .get()
                 .load(this.restaurantImageURL)
                 .into (this.businessImageView);
     }
