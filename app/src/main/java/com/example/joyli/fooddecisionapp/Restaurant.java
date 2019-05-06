@@ -1,6 +1,10 @@
 package com.example.joyli.fooddecisionapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +26,8 @@ public class Restaurant implements IBusiness {
     private TextView businessReviewCount;
     private ImageView businessImageView;
     private JSONObject restaurantJson;
+    private double restaurantLatitude;
+    private double restaurantLongitude;
 
     Restaurant(JSONObject restaurantJson, Context context, ImageView businessRatingImageView, TextView businessNameTextView, TextView businessLocationTextView, TextView businessReviewCount, ImageView businessImageView){
         this.restaurantJson = restaurantJson;
@@ -85,6 +91,23 @@ public class Restaurant implements IBusiness {
         }
     }
 
+    private void getRestaurantLatitude(){
+        try {
+            JSONObject coordinateObject = this.restaurantJson.getJSONObject("coordinates");
+            this.restaurantLatitude = coordinateObject.getDouble("latitude");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getRestaurantLongitude(){
+        try {
+            JSONObject coordinateObject = this.restaurantJson.getJSONObject("coordinates");
+            this.restaurantLongitude = coordinateObject.getDouble("longitude");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public void setBusinessRatingUI (){
         if (this.restaurantRate.equals("0")){
             int drawableID= this.context.getResources().getIdentifier ("stars_regular_0","drawable", this.context.getPackageName());
@@ -130,8 +153,17 @@ public class Restaurant implements IBusiness {
     public void setBusinessNameUI (){
         this.businessNameTextView.setText(this.restaurantName);
     }
+
     public void setBusinessLocationUI(){
+        getRestaurantLatitude();
+        getRestaurantLongitude();
         this.businessLocationTextView.setText(this.restaurantLocation);
+        this.businessLocationTextView.setPaintFlags(businessLocationTextView.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        this.businessLocationTextView.setOnClickListener((View v)-> {
+            Intent openLocationInGoogleMap= new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q="+ restaurantLatitude+ ", " + restaurantLongitude));
+            openLocationInGoogleMap.setPackage("com.google.android.apps.maps");
+            this.context.startActivity(openLocationInGoogleMap);});
+
     }
     public void setBusinessImageUI (){
         Picasso
